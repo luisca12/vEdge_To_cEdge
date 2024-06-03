@@ -1,11 +1,11 @@
 import os
-from commandsCLI import shErroDisable
+
 
 def greetingString():
         os.system("CLS")
-        print('  ----------------------------------------------------------------------- ')
-        print("    Welcome to the automated Recovery of errDisabled interfaces  Program ")
-        print('  ----------------------------------------------------------------------- ')
+        print('  ------------------------------------------------------------------------- ')
+        print("    Welcome to the automated Tier 2-Implementation Plan generation program ")
+        print('  ------------------------------------------------------------------------- ')
 
 def menuString(deviceIP, username):
         os.system("CLS")
@@ -14,8 +14,7 @@ def menuString(deviceIP, username):
         print('\t\tMenu - Please choose an option')
         print('\t\t  Only numbers are accepted')
         print('  -------------------------------------------------------------- ')
-        print('  >\t\t1. To run the following commands:\t       <')
-        print(f'{shErroDisable} and recover errDisable interfaces\n')      
+        print('  >\t\t1. To run the following commands:\t       <')  
         print('  >\t\t\t2. Exit the program\t\t       <')
         print('  -------------------------------------------------------------- \n')
 

@@ -46,3 +46,6 @@ logConfiguration = {
         },
     }
 }
+
+logging.config.dictConfig(logConfiguration)
+authLog = logging.getLogger('infoLog')
