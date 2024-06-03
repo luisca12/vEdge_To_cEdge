@@ -1,17 +1,17 @@
-from log import authLog
 import os
-import logging.config
 from strings import greetingString
 from utils import mkdir
-from fileHandler import chooseCSV, chooseDocx
 
-def main():    
-    mkdir()
+
+def main():  
+    mkdir()  
     os.system("CLS")
     greetingString()
-
+    from log import authLog
+    from fileHandler import chooseCSV, chooseDocx
     while True:
         chooseCSV()
+
         break
 
 if __name__ == "__main__":
