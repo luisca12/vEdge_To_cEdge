@@ -10,8 +10,8 @@ def main():
     from log import authLog
     from fileHandler import chooseCSV, chooseDocx
     while True:
-        chooseCSV()
-
+        rowText = chooseCSV()
+        chooseDocx(rowText)
         break
 
 if __name__ == "__main__":
