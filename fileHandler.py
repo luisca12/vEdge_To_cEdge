@@ -40,10 +40,10 @@ def chooseCSV():
             authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
 def chooseDocx(rowText):
-    cityRegex = re.compile(r'city', re.IGNORECASE)
-    stateRegex = re.compile(r'state', re.IGNORECASE)
-    mplsRegex = re.compile(r'mpls-speed', re.IGNORECASE)
-    siteCodeRegex = re.compile(r'site-code', re.IGNORECASE)
+    # cityRegex = re.compile(r'city', re.IGNORECASE)
+    # stateRegex = re.compile(r'state', re.IGNORECASE)
+    # mplsRegex = re.compile(r'mpls-speed', re.IGNORECASE)
+    # siteCodeRegex = re.compile(r'site-code', re.IGNORECASE)
 
     while True:
         wordFile = input("Please enter the path to the DOCX file: ")
@@ -84,12 +84,14 @@ def chooseDocx(rowText):
                 'site-no'
             ]
 
-            manualReplacements = {
-                siteCodeRegex : siteCode,
-                cityRegex : city,
-                stateRegex : state,
-                mplsRegex : mplsSpeed
+            stringRegexPatt = {
+                'city': city,
+                'state': state,
+                'mpls-speed': mplsSpeed,
+                'site-code': siteCode
             }
+
+            manualReplacements = {re.compile(r'\b{}\b'.format(pattern), re.IGNORECASE): value for pattern, value in stringRegexPatt.items()}
 
             for para in wordDOC.paragraphs:
                 for run in para.runs:
