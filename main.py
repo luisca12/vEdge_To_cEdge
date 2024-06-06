@@ -11,7 +11,7 @@ def main():
     from fileHandler import chooseCSV, chooseDocx
     while True:
         rowText = chooseCSV()
-        chooseDocx(rowText)
+        #chooseDocx(rowText)
         break
 
 if __name__ == "__main__":
