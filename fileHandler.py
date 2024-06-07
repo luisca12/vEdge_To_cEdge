@@ -91,25 +91,25 @@ def chooseDocx(rowText, ignoredStrings=""):
                 'cEdge1-rtr-ip': f'{rowText[4]}',
                 'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
                 'cEdge-asn': f'{rowText[6]}',
-                'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
-                'cEdge1-loop' : f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
+                # 'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
+                # 'cEdge1-loop' : f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
                 'cEdge1-sw-ip': f'{rowText[9]}',
                 'switch-asn': f'{rowText[10]}',
-                'mpls-pe-ip': f'{rowText[11]}',
-                'cEdge2-tloc3-ext-ip': f'{rowText[12]}',
+                'mpls-pe-ip': f'{rowText[11]}', # 162.95.180.81
+                'cEdge2-tloc3-ext-ip': f'{rowText[12]}', # CORRECT. 30.253.208.130
                 'cedge2-host - gi0/0/3 - TLOC3': f'{rowText[13]}',
                 'cEdge1-tloc3-ip': f'{rowText[14]}',
                 'mpls-ce1-ip': f'{rowText[15]}',
                 'cEdge1-host': f'{rowText[16]}',
                 'latitude': f'{rowText[17]}',
                 'longitude': f'{rowText[18]}',
-                'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
+                # 'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
                 'site-no': f'{rowText[20]}',
-                # Here starts the second CSV File
+                # Here starts the second CSV File #
                 'cedge2-serial-no': f'{rowText[21]}',
                 'cedge2-device-ip': f'{rowText[22]}',
                 'cEdge2-host': f'{rowText[23]}',
-                'snmp-location': f'{rowText[24]}',
+                #'snmp-location': f'{rowText[24]}',
                 'cEdge2-rtr-ip': f'{rowText[25]}',
                 'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
                 'cEdge-asn': f'{rowText[27]}',
@@ -117,18 +117,20 @@ def chooseDocx(rowText, ignoredStrings=""):
                 'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
                 'cEdge2-sw-ip': f'{rowText[30]}',
                 'switch-asn': f'{rowText[31]}',
-                'cEdge2-tloc3-gate': f'{rowText[32]}',
-                'mpls-pe-ip': f'{rowText[33]}',
+                'mpls-pe-ip': f'{rowText[32]}', # 162.95.180.81
+                'cEdge2-tloc3-gate': f'{rowText[33]}',
                 'cEdge1-host TLOC3 gi0/0/3': f'{rowText[34]}',
-                'cEdge2-tloc3-ext-ip': f'{rowText[35]}',
+                # 'cEdge2-tloc3-ext-ip': f'{rowText[35]}',
                 'cedge2-tloc3-ip/cedge2-tloc3-cidr': f'{rowText[36]}',
                 'mpls-ce2-ip': f'{rowText[37]}',
-                'cEdge2-host': f'{rowText[38]}',
+                #'cEdge2-host': f'{rowText[38]}',
                 'latitude': f'{rowText[39]}',
                 'longitude': f'{rowText[40]}',
                 'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
                 'site-no': f'{rowText[42]}'
             }
+            print(replaceText)
+            os.system("PAUSE")
 
             stringRegexPatt = {
                 'city': city,
@@ -152,7 +154,7 @@ def chooseDocx(rowText, ignoredStrings=""):
             for para in wordDOC.paragraphs:
                 if any(run.font.color.rgb == RGBColor(255, 0, 0) for run in para.runs):
                     print(f"Found red text: {para.text}")
-                    for wordString, csvString in zip(replaceText, rowText):
+                    for wordString, csvString in replaceText.items():
                         if re.search(r'\b{}\b'.format(re.escape(wordString)), para.text, re.IGNORECASE):
                             print(f"INFO: Replacing '{wordString}' with '{csvString}'")
                             authLog.info(f"Replacing '{wordString}' with '{csvString}'")
@@ -170,7 +172,7 @@ def chooseDocx(rowText, ignoredStrings=""):
                         for paragraph in cell.paragraphs:
                             if any(run.font.color.rgb == RGBColor(255, 0, 0) for run in paragraph.runs):
                                 print(f"Found red text: {paragraph.text}")
-                                for wordString, csvString in zip(replaceText, rowText):
+                                for wordString, csvString in replaceText.items():
                                     if re.search(r'\b{}\b'.format(re.escape(wordString)), paragraph.text, re.IGNORECASE):
                                         print(f"INFO: Replacing '{wordString}' with '{csvString}'")
                                         authLog.info(f"Replacing in Table: '{wordString}' with '{csvString}'")
