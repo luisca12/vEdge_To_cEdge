@@ -8,8 +8,9 @@ import csv
 import traceback
 
 def chooseCSV():
-    ignoreStrings = re.compile(r'(FALSE|TRUE|100000|biz-internet|private5|^ge0\/0$|^ge0\/1$|^ge0\/1$|^ge0\/2$|^ge0\/3$)')
+    ignoreStrings = re.compile(r'(FALSE|TRUE|100000|^100$|full|biz-internet|private5|TPX|core|^ge0\/0$|^ge0\/1$|^ge0\/1$|^ge0\/2$|^ge0\/3$)')
     csvDataList = []
+    ignoredStrMatchList = []
 
     for i in range(2):
         while True:
@@ -23,10 +24,12 @@ def chooseCSV():
                     if csvData:
                         rowText = csvData[1]
                         filteredRowText = [row for row in rowText if not ignoreStrings.search(row)]
+                        ignoredStrMatch = [row for row in rowText if ignoreStrings.search(row)]
                         print("Found the following strings in the CSV file:")
                         for row in filteredRowText:
                             print(f"{row}")
                         authLog.info(f"Found the following strings in the CSV file:\n{filteredRowText}")
+                        ignoredStrMatchList.append(ignoredStrMatch)
                         csvDataList.append(filteredRowText)
                         break
                     else:
@@ -43,13 +46,18 @@ def chooseCSV():
                 authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
                 
     mergedData = [item for sublist in csvDataList for item in sublist]
-    return mergedData
+    mergedData1 = [item for sublist in ignoredStrMatchList for item in sublist]
+    return mergedData, mergedData1
 
-def chooseDocx(rowText):
-    # cityRegex = re.compile(r'city', re.IGNORECASE)
-    # stateRegex = re.compile(r'state', re.IGNORECASE)
-    # mplsRegex = re.compile(r'mpls-speed', re.IGNORECASE)
-    # siteCodeRegex = re.compile(r'site-code', re.IGNORECASE)
+def chooseDocx(rowText, ignoredStrings=""):
+    matchTPXRegex = re.compile(r'TPX')
+    matchTPXRegexOut = [row for row in ignoredStrings if matchTPXRegex.search(row)]
+    print(f"\nINFO: TPX Circuit Information: {matchTPXRegexOut[0]}")
+
+    matchLUMRegex = re.compile(r'LUM')
+    matchLUMRegexOut = [row for row in ignoredStrings if matchLUMRegex.search(row)]
+    print(f"INFO: LUM Circuit Information for SDW-01: {matchLUMRegexOut[0]}")
+    print(f"INFO: LUM Circuit Information for SDW-02: {matchLUMRegexOut[1]} \n")
 
     while True:
         wordFile = input("Please enter the path to the DOCX file: ")
@@ -59,88 +67,121 @@ def chooseDocx(rowText):
             siteCode = input(f"Please input the Site Code: ")
             city = input("Please input the City: ")
             state = input("Please input the State: ")
+            swMgmtIP = input("Please input the Switch Core Management IP: ")
+            swHost = input("Please input the Switch Core Hostname: ")
+            swcEdge1_mplsPort = input("Please enter the Switch port for cEdge1 connection to Lumen (sw-cEdge1-mpls-port): ")
+            swcEdge2_mplsPort = input("Please enter the Switch port for cEdge1 connection to Lumen (sw-cEdge2-mpls-port): ")
+            mplsCircuitID = input("Please input the MPLS Circuit ID:")
             mplsSpeed = input("Please input the MPLS speed: ")
-            
+            bb1Carrier = input("Please input the bb1-carrier: ")
+            bb1Circuitid = input("Please input the bb1-circuitid: ")
+            bb1UPspeed =  input("Please input the bb1 Upload speed: ")
+            bb1DWspeed =  input("Please input the bb1 Download speed: ")
+            cEdge2TLOC3_Port = input("Please input the cedge2-tloc3-port: ")
+
             authLog.info(f"User chose  the DOCX File path: {wordFile}")
             print(f"INFO: file successfully found: {wordFile}.")
+            print(rowText)
+            os.system("PAUSE")
             replaceText = {
-                'cedge1-serial-no':rowText[0],
-                'cedge-device-ip':rowText[1],
-                'cEdge1-host':rowText[2],
-                'snmp-location':rowText[3],
-                'sw-host - sw-cEdge1-port':rowText[4],
-                'cEdge1-rtr-ip':rowText[5],
-                'cEdge1-loop':rowText[6],
-                'cEdge-asn':rowText[7],
-                'cEdge1-loop':rowText[8],
-                'cEdge1-loop':rowText[9],
-                'cEdge1-sw-ip':rowText[10],
-                'sw-host-sw-cEdge1-port':rowText[11],
-                'switch-asn':rowText[12],
-                'mpls-pe-ip':rowText[13],
-                'cEdge2-tloc3-ext-ip':rowText[14],
-                'cedge2-host - gi0/0/3 - TLOC3':rowText[15],
-                'cEdge1-tloc3-ip':rowText[16],
-                'sw-host - sw-cEdge1-mpls-port - LUM - mpls-circuitid':rowText[17],
-                'mpls-ce1-ip':rowText[18],
-                'cEdge1-host':rowText[19],
-                'latitude':rowText[20],
-                'longitude':rowText[21],
-                'cEdge1-loop':rowText[22],
-                'site-no':rowText[23],
+                'cedge1-serial-no': f'{rowText[0]}',
+                'cedge1-device-ip': f'{rowText[1]}',
+                'cEdge1-host': f'{rowText[2]}',
+                'snmp-location': f'{rowText[3]}',
+                'cEdge1-rtr-ip': f'{rowText[4]}',
+                'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
+                'cEdge-asn': f'{rowText[6]}',
+                'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
+                'cEdge1-loop' : f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
+                'cEdge1-sw-ip': f'{rowText[9]}',
+                'switch-asn': f'{rowText[10]}',
+                'mpls-pe-ip': f'{rowText[11]}',
+                'cEdge2-tloc3-ext-ip': f'{rowText[12]}',
+                'cedge2-host - gi0/0/3 - TLOC3': f'{rowText[13]}',
+                'cEdge1-tloc3-ip': f'{rowText[14]}',
+                'mpls-ce1-ip': f'{rowText[15]}',
+                'cEdge1-host': f'{rowText[16]}',
+                'latitude': f'{rowText[17]}',
+                'longitude': f'{rowText[18]}',
+                'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
+                'site-no': f'{rowText[20]}',
                 # Here starts the second CSV File
-                'cedge2-serial-no': rowText[24],
-                'cedge2-device-ip': rowText[25],
-                'cEdge2-host': rowText[26],
-                'snmp-location': rowText[27],
-                'cEdge2-rtr-ip': rowText[28],
-                '':''
+                'cedge2-serial-no': f'{rowText[21]}',
+                'cedge2-device-ip': f'{rowText[22]}',
+                'cEdge2-host': f'{rowText[23]}',
+                'snmp-location': f'{rowText[24]}',
+                'cEdge2-rtr-ip': f'{rowText[25]}',
+                'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
+                'cEdge-asn': f'{rowText[27]}',
+                'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
+                'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
+                'cEdge2-sw-ip': f'{rowText[30]}',
+                'switch-asn': f'{rowText[31]}',
+                'cEdge2-tloc3-gate': f'{rowText[32]}',
+                'mpls-pe-ip': f'{rowText[33]}',
+                'cEdge1-host TLOC3 gi0/0/3': f'{rowText[34]}',
+                'cEdge2-tloc3-ext-ip': f'{rowText[35]}',
+                'cedge2-tloc3-ip/cedge2-tloc3-cidr': f'{rowText[36]}',
+                'mpls-ce2-ip': f'{rowText[37]}',
+                'cEdge2-host': f'{rowText[38]}',
+                'latitude': f'{rowText[39]}',
+                'longitude': f'{rowText[40]}',
+                'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
+                'site-no': f'{rowText[42]}'
             }
 
             stringRegexPatt = {
                 'city': city,
                 'state': state,
                 'mpls-speed': mplsSpeed,
-                'site-code': siteCode
+                'site-code': siteCode,
+                'sw-mgmt-ip' : swMgmtIP,
+                'sw-host' : swHost,
+                'sw-cEdge1-mpls-port': swcEdge1_mplsPort,
+                'sw-cEdge2-mpls-port': swcEdge2_mplsPort,
+                'mpls-circuitid':  mplsCircuitID,
+                'bb1-carrier': bb1Carrier,
+                'bb1-circuitid': bb1Circuitid,
+                'bb1-up-speed': bb1UPspeed,
+                'bb1-down-speed': bb1DWspeed,
+                'cedge2-tloc3-port': cEdge2TLOC3_Port
             }
 
             manualReplacements = {re.compile(r'\b{}\b'.format(pattern), re.IGNORECASE): value for pattern, value in stringRegexPatt.items()}
 
             for para in wordDOC.paragraphs:
-                for run in para.runs:
-                    if run.font.color.rgb == RGBColor(255, 0, 0):
-                        print(f"Found red text: {run.text}")
-                        for wordString, csvString in zip(replaceText, rowText):
-                            if re.search(r'\b{}\b'.format(re.escape(wordString)), run.text, re.IGNORECASE):
-                                print(f"INFO: Replacing '{wordString}' with '{csvString}'")
-                                authLog.info(f"Replacing '{wordString}' with '{csvString}'")
-                                run.text = re.sub(r'\b{}\b'.format(re.escape(wordString)), csvString, run.text, flags=re.IGNORECASE)
+                if any(run.font.color.rgb == RGBColor(255, 0, 0) for run in para.runs):
+                    print(f"Found red text: {para.text}")
+                    for wordString, csvString in zip(replaceText, rowText):
+                        if re.search(r'\b{}\b'.format(re.escape(wordString)), para.text, re.IGNORECASE):
+                            print(f"INFO: Replacing '{wordString}' with '{csvString}'")
+                            authLog.info(f"Replacing '{wordString}' with '{csvString}'")
+                            para.text = re.sub(r'\b{}\b'.format(re.escape(wordString)), csvString, para.text, flags=re.IGNORECASE)
 
-                        for placeholder, replacement in manualReplacements.items():
-                            if placeholder.search(run.text):
-                                print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
-                                authLog.info(f"Replacing '{placeholder.pattern}' with '{replacement}'")
-                                run.text = placeholder.sub(replacement, run.text)
+                    for placeholder, replacement in manualReplacements.items():
+                        if placeholder.search(para.text):
+                            print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
+                            authLog.info(f"Replacing '{placeholder.pattern}' with '{replacement}'")
+                            para.text = placeholder.sub(replacement, para.text)
 
             for table in wordDOC.tables:
                 for row in table.rows:
                     for cell in row.cells:
                         for paragraph in cell.paragraphs:
-                            for run in paragraph.runs:
-                                if run.font.color.rgb == RGBColor(255, 0, 0):
-                                    print(f"Found red text: {run.text}")
-                                    for wordString, csvString in zip(replaceText, rowText):
-                                        if re.search(r'\b{}\b'.format(re.escape(wordString)), run.text, re.IGNORECASE):
-                                            print(f"INFO: Replacing '{wordString}' with '{csvString}'")
-                                            authLog.info(f"Replacing in Table: '{wordString}' with '{csvString}'")
-                                            run.text = re.sub(r'\b{}\b'.format(re.escape(wordString)), csvString, run.text, flags=re.IGNORECASE)
+                            if any(run.font.color.rgb == RGBColor(255, 0, 0) for run in paragraph.runs):
+                                print(f"Found red text: {paragraph.text}")
+                                for wordString, csvString in zip(replaceText, rowText):
+                                    if re.search(r'\b{}\b'.format(re.escape(wordString)), paragraph.text, re.IGNORECASE):
+                                        print(f"INFO: Replacing '{wordString}' with '{csvString}'")
+                                        authLog.info(f"Replacing in Table: '{wordString}' with '{csvString}'")
+                                        paragraph.text = re.sub(r'\b{}\b'.format(re.escape(wordString)), csvString, paragraph.text, flags=re.IGNORECASE)
 
-                                    for placeholder, replacement in manualReplacements.items():
-                                        if placeholder.search(run.text):
-                                            print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
-                                            authLog.info(f"Replacing in Table: '{placeholder.pattern}' with '{replacement}'")
-                                            run.text = placeholder.sub(replacement, run.text)
-                                            
+                                for placeholder, replacement in manualReplacements.items():
+                                    if placeholder.search(paragraph.text):
+                                        print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
+                                        authLog.info(f"Replacing in Table: '{placeholder.pattern}' with '{replacement}'")
+                                        paragraph.text = placeholder.sub(replacement, paragraph.text)
+
             newWordDoc = f"{hostname}.docx"
             wordDOC.save(newWordDoc)
             authLog.info(f"Replacements made successfully in DOCX file and saved as: {newWordDoc}")
