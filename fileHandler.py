@@ -78,11 +78,12 @@ def chooseDocx(rowText, ignoredStrings=""):
             bb1UPspeed =  input("Please input the bb1 Upload speed: ")
             bb1DWspeed =  input("Please input the bb1 Download speed: ")
             cEdge2TLOC3_Port = input("Please input the cedge2-tloc3-port: ")
+            cedge2TLOC3_Mask = input(f"Please input the cedge2-tloc3-mask ({rowText[36]}):")
 
             authLog.info(f"User chose  the DOCX File path: {wordFile}")
             print(f"INFO: file successfully found: {wordFile}.")
-            print(rowText)
-            os.system("PAUSE")
+            # print(rowText)
+            # os.system("PAUSE")
             replaceText = {
                 'cedge1-serial-no': f'{rowText[0]}',
                 'cedge1-device-ip': f'{rowText[1]}',
@@ -100,7 +101,7 @@ def chooseDocx(rowText, ignoredStrings=""):
                 'cedge2-host - gi0/0/3 - TLOC3': f'{rowText[13]}',
                 'cEdge1-tloc3-ip': f'{rowText[14]}',
                 'mpls-ce1-ip': f'{rowText[15]}',
-                'cEdge1-host': f'{rowText[16]}',
+                #'cEdge1-host': f'{rowText[16]}',
                 'latitude': f'{rowText[17]}',
                 'longitude': f'{rowText[18]}',
                 # 'cEdge1-loop': f'{rowText[7]}', #Changed to rowText[7] since we only need the IP, no prefix-length
@@ -129,8 +130,8 @@ def chooseDocx(rowText, ignoredStrings=""):
                 'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
                 'site-no': f'{rowText[42]}'
             }
-            print(replaceText)
-            os.system("PAUSE")
+            # print(replaceText)
+            # os.system("PAUSE")
 
             stringRegexPatt = {
                 'city': city,
@@ -146,7 +147,8 @@ def chooseDocx(rowText, ignoredStrings=""):
                 'bb1-circuitid': bb1Circuitid,
                 'bb1-up-speed': bb1UPspeed,
                 'bb1-down-speed': bb1DWspeed,
-                'cedge2-tloc3-port': cEdge2TLOC3_Port
+                'cedge2-tloc3-port': cEdge2TLOC3_Port,
+                'cedge2-tloc3-mask' : cedge2TLOC3_Mask
             }
 
             manualReplacements = {re.compile(r'\b{}\b'.format(pattern), re.IGNORECASE): value for pattern, value in stringRegexPatt.items()}
