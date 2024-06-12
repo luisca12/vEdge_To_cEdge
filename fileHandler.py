@@ -76,13 +76,14 @@ def chooseDocx(rowText, ignoredStrings=""):
             cEdge2TLOC3_Port = input("Please input the cedge2-tloc3-port: ")
             cedge2TLOC3_Mask = input(f"Please input the cedge2-tloc3-mask ({rowText[36]}):")
             cedge2TLOC3_CIDR = input(f"Please input the cedge2-tloc3-cidr (/30): ")
-            cEdge1_VPN1_LAN = input("Please input the VPN1 /30 link between sdw-01 and core switch network address (cedge1-lan-net): ")
-            cEdge2_VPN1_LAN = input("Please input the VPN1 /30 link between sdw-02 and core switch network address (cedge2-lan-net): ")
+            cEdge1_VPN1_LAN = input("Please input the VPN1 Network /30 link between sdw-01 and core switch network address (cedge1-lan-net): ")
+            cEdge2_VPN1_LAN = input("Please input the VPN1 Network /30 link between sdw-02 and core switch network address (cedge2-lan-net): ")
             print("=" * 61,"\n\tINFO: Now begins information of the Core Switch")
             print("=" * 61)
             swHost = input("Please input the Core Switch Hostname: ")
             swLoop = input("Please input the loopback0 ip address of the Core Switch: ")
             swMgmtIP = input("Please input the Core Switch Management IP: ")
+            swMgmtVLAN = input("Please input the Core Switch Management VLAN: ")
             swMgmtIP_CIDR = input("Please input VLAN1500 CIDR (/30): ")
             swcEdge1_port = input("Please input the connection to sdw-01 gi0/0/0 in VPN 1 (sw-cedge1-port): ")
             swcEdge1_vlan = input("Please input the VLAN, 1105 if possible (sw-cedge1-vlan): ")
@@ -174,7 +175,9 @@ def chooseDocx(rowText, ignoredStrings=""):
                 'sw-cedge2-vlan': swcEdge2_vlan,
                 'sw-mpls-port': swMPLS_port,
                 'sw-remote-con-net1': swOpenGear1,
-                'sw-remote-con-net2': swOpenGear2
+                'sw-remote-con-net2': swOpenGear2,
+                'sw-mgmt-vlan' : swMgmtVLAN,
+                
             }
 
             manualReplacements = {re.compile(r'\b{}\b'.format(pattern), re.IGNORECASE): value for pattern, value in stringRegexPatt.items()}
@@ -212,7 +215,7 @@ def chooseDocx(rowText, ignoredStrings=""):
                                         authLog.info(f"Replacing in Table: '{placeholder.pattern}' with '{replacement}'")
                                         paragraph.text = placeholder.sub(replacement, paragraph.text)
 
-            newWordDoc = f"{hostname}.docx"
+            newWordDoc = f"{hostname}_ImplementationPlan.docx"
             wordDOC.save(newWordDoc)
             authLog.info(f"Replacements made successfully in DOCX file and saved as: {newWordDoc}")
             print(f"INFO: Replacements made successfully in DOCX file and saved as: {newWordDoc}")
