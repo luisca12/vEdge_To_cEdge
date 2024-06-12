@@ -78,7 +78,8 @@ def chooseDocx(rowText, ignoredStrings=""):
             cedge2TLOC3_CIDR = input(f"Please input the cedge2-tloc3-cidr (/30): ")
             cEdge1_VPN1_LAN = input("Please input the VPN1 /30 link between sdw-01 and core switch network address (cedge1-lan-net): ")
             cEdge2_VPN1_LAN = input("Please input the VPN1 /30 link between sdw-02 and core switch network address (cedge2-lan-net): ")
-            print( "=" * 50,"\n\tINFO: Now begins information of the Core Switch\n", "=" * 50)
+            print("=" * 61,"\n\tINFO: Now begins information of the Core Switch")
+            print("=" * 61)
             swHost = input("Please input the Core Switch Hostname: ")
             swLoop = input("Please input the loopback0 ip address of the Core Switch: ")
             swMgmtIP = input("Please input the Core Switch Management IP: ")
@@ -89,7 +90,7 @@ def chooseDocx(rowText, ignoredStrings=""):
             swcEdge2_vlan = input("Please input the VLAN, 1107 if possible (sw-cedge2-vlan): ")
             swMPLS_port = input("Please input the switch port connected to Lumen circuit (sw-mpls-port): ")
             swcEdge1_mplsPort = input("Please enter the Switch port for cEdge1 connection to Lumen (sw-cEdge1-mpls-port): ")
-            swcEdge2_mplsPort = input("Please enter the Switch port for cEdge1 connection to Lumen (sw-cEdge2-mpls-port): ")
+            swcEdge2_mplsPort = input("Please enter the Switch port for cEdge2 connection to Lumen (sw-cEdge2-mpls-port): ")
             swOpenGear1 = input("Please input the interface to OpenGear #1 (sw-remote-con-net1): ")
             swOpenGear2 = input("Please input the interface to OpenGear #2 (sw-remote-con-net2): ")
 
@@ -162,6 +163,7 @@ def chooseDocx(rowText, ignoredStrings=""):
                 'bb1-down-speed': bb1DWspeed,
                 'cedge2-tloc3-port': cEdge2TLOC3_Port,
                 'cedge2-tloc3-mask' : cedge2TLOC3_Mask,
+                'cedge2-tloc3-cidr': cedge2TLOC3_CIDR,
                 'cedge1-lan-net': cEdge1_VPN1_LAN,
                 'cedge2-lan-net': cEdge2_VPN1_LAN,
                 'sw-loop': swLoop,
