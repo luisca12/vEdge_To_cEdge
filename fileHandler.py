@@ -64,40 +64,40 @@ def chooseDocx(rowText, ignoredStrings=""):
         wordFile = input("Please enter the path to the DOCX file: ")
         try:
             wordDOC = Document(wordFile)
-            hostname = input("Please input the Hostname of the device: ")
-            # siteCode = input(f"Please input the Site Code: ")
-            # city = input("Please input the City: ")
-            # state = input("Please input the State: ")
-            # mplsCircuitID = input("Please input the MPLS Circuit ID:")
-            # mplsSpeed = input("Please input the MPLS speed: ")
-            # bb1Carrier = input("Please input the bb1-carrier: ")
-            # bb1Circuitid = input("Please input the bb1-circuitid: ")
-            # bb1UPspeed =  input("Please input the bb1 Upload speed: ")
-            # bb1DWspeed =  input("Please input the bb1 Download speed: ")
-            # cEdge2TLOC3_Port = input("Please input the cedge2-tloc3-port: ")
-            # cedge2TLOC3_Mask = input(f"Please input the cedge2-tloc3-mask ({rowText[36]}):")
-            # cedge2TLOC3_CIDR = input(f"Please input the cedge2-tloc3-cidr (/30): ")
-            # cEdge1_VPN1_LAN = input("Please input the VPN1 Network /30 link between sdw-01 and core switch network address (cedge1-lan-net): ")
-            # cEdge2_VPN1_LAN = input("Please input the VPN1 Network /30 link between sdw-02 and core switch network address (cedge2-lan-net): ")
-            # print("=" * 61,"\n\tINFO: Now begins information of the Core Switch")
-            # print("=" * 61)
-            # swHost = input("Please input the Core Switch Hostname: ")
-            # swLoop = input("Please input the loopback0 ip address of the Core Switch: ")
-            # swMgmtIP = input("Please input the Core Switch Management IP: ")
-            # swMgmtVLAN = input("Please input the Core Switch Management VLAN: ")
-            # swMgmtIP_CIDR = input("Please input VLAN1500 CIDR (/30): ")
-            # swcEdge1_port = input("Please input the connection to sdw-01 gi0/0/0 in VPN 1 (sw-cedge1-port): ")
-            # swcEdge1_vlan = input("Please input the VLAN, 1105 if possible (sw-cedge1-vlan): ")
-            # swcEdge2_port = input("Please input the connection to sdw-02 gi0/0/0 in VPN 1 (sw-cedge2-port): ")
-            # swcEdge2_vlan = input("Please input the VLAN, 1107 if possible (sw-cedge2-vlan): ")
-            # swMPLS_port = input("Please input the switch port connected to Lumen circuit (sw-mpls-port): ")
-            # swcEdge1_mplsPort = input("Please enter the Switch port for cEdge1 connection to Lumen (sw-cEdge1-mpls-port): ")
-            # swcEdge2_mplsPort = input("Please enter the Switch port for cEdge2 connection to Lumen (sw-cEdge2-mpls-port): ")
-            # swOpenGear1 = input("Please input the interface to OpenGear #1 (sw-remote-con-net1): ")
-            # swOpenGear2 = input("Please input the interface to OpenGear #2 (sw-remote-con-net2): ")
-
             authLog.info(f"User chose  the DOCX File path: {wordFile}")
             print(f"INFO: file successfully found: {wordFile}.")
+            hostname = input("Please input the Hostname of the device: ")
+            city = input("Please input the City: ")
+            state = input("Please input the State: ")
+            siteCode = input(f"Please input the Site Code: ")
+            mplsCircuitID = input("Please input the MPLS Circuit ID:")
+            mplsSpeed = input("Please input the MPLS speed: ")
+            bb1Carrier = input("Please input the bb1-carrier: ")
+            bb1Circuitid = input("Please input the bb1-circuitid: ")
+            bb1UPspeed =  input("Please input the bb1 Upload speed: ")
+            bb1DWspeed =  input("Please input the bb1 Download speed: ")
+            cEdge2TLOC3_Port = input("Please input the cedge2-tloc3-port: ")
+            cedge2TLOC3_Mask = input(f"Please input the cedge2-tloc3-mask ({rowText[36]}):")
+            cedge2TLOC3_CIDR = input(f"Please input the cedge2-tloc3-cidr (/30): ")
+            cEdge1_VPN1_LAN = input("Please input the VPN1 Network /30 link between sdw-01 and core switch network address (cedge1-lan-net): ")
+            cEdge2_VPN1_LAN = input("Please input the VPN1 Network /30 link between sdw-02 and core switch network address (cedge2-lan-net): ")
+            print("=" * 61,"\n\tINFO: Now begins information of the Core Switch")
+            print("=" * 61)
+            swHost = input("Please input the Core Switch Hostname: ")
+            swLoop = input("Please input the loopback0 ip address of the Core Switch: ")
+            swMgmtVLAN = input("Please input the Core Switch Management VLAN: ")
+            swMgmtIP = input("Please input the  VLAN 1500 gateway ip address: ")
+            swMgmtIP_CIDR = input("Please input VLAN1500 CIDR (/30): ")
+            swcEdge1_port = input("Please input the connection to sdw-01 gi0/0/0 in VPN 1 (sw-cedge1-port): ")
+            swcEdge1_vlan = input("Please input the VLAN, 1101 if possible (sw-cedge1-vlan): ")
+            swcEdge2_port = input("Please input the connection to sdw-02 gi0/0/0 in VPN 1 (sw-cedge2-port): ")
+            swcEdge2_vlan = input("Please input the VLAN, 1103 if possible (sw-cedge2-vlan): ")
+            swMPLS_port = input("Please input the switch port connected to Lumen circuit (sw-mpls-port): ")
+            swcEdge1_mplsPort = input("Please input the Switch port for cEdge1 connection to Lumen (sw-cEdge1-mpls-port): ")
+            swcEdge2_mplsPort = input("Please input the Switch port for cEdge2 connection to Lumen (sw-cEdge2-mpls-port): ")
+            swOpenGear1 = input("Please input the interface to OpenGear #1 (sw-remote-con-net1): ")
+            swOpenGear2 = input("Please input the interface to OpenGear #2 (sw-remote-con-net2): ")
+
             for index, item in enumerate(rowText):
                 print(f"This is rowText[{index}] with string: {item}")
             # os.system("PAUSE")
@@ -150,39 +150,39 @@ def chooseDocx(rowText, ignoredStrings=""):
             print(json.dumps(replaceText, indent=4))
             os.system("PAUSE")
 
-            # stringRegexPatt = {
-            #     'city': city,
-            #     'state': state,
-            #     'mpls-speed': mplsSpeed,
-            #     'site-code': siteCode,
-            #     'sw-mgmt-ip' : swMgmtIP,
-            #     'sw-host' : swHost,
-            #     'sw-cEdge1-mpls-port': swcEdge1_mplsPort,
-            #     'sw-cEdge2-mpls-port': swcEdge2_mplsPort,
-            #     'mpls-circuitid':  mplsCircuitID,
-            #     'bb1-carrier': bb1Carrier,
-            #     'bb1-circuitid': bb1Circuitid,
-            #     'bb1-up-speed': bb1UPspeed,
-            #     'bb1-down-speed': bb1DWspeed,
-            #     'cedge2-tloc3-port': cEdge2TLOC3_Port,
-            #     'cedge2-tloc3-mask' : cedge2TLOC3_Mask,
-            #     'cedge2-tloc3-cidr': cedge2TLOC3_CIDR,
-            #     'cedge1-lan-net': cEdge1_VPN1_LAN,
-            #     'cedge2-lan-net': cEdge2_VPN1_LAN,
-            #     'sw-loop': swLoop,
-            #     'sw-mgmt-cidr': swMgmtIP_CIDR,
-            #     'sw-cedge1-port': swcEdge1_port,
-            #     'sw-cedge1-vlan': swcEdge1_vlan,
-            #     'sw-cedge2-port': swcEdge2_port,
-            #     'sw-cedge2-vlan': swcEdge2_vlan,
-            #     'sw-mpls-port': swMPLS_port,
-            #     'sw-remote-con-net1': swOpenGear1,
-            #     'sw-remote-con-net2': swOpenGear2,
-            #     'sw-mgmt-vlan' : swMgmtVLAN,
+            stringRegexPatt = {
+                'city': city,
+                'state': state,
+                'mpls-speed': mplsSpeed,
+                'site-code': siteCode,
+                'sw-mgmt-ip' : swMgmtIP,
+                'sw-host' : swHost,
+                'sw-cEdge1-mpls-port': swcEdge1_mplsPort,
+                'sw-cEdge2-mpls-port': swcEdge2_mplsPort,
+                'mpls-circuitid':  mplsCircuitID,
+                'bb1-carrier': bb1Carrier,
+                'bb1-circuitid': bb1Circuitid,
+                'bb1-up-speed': bb1UPspeed,
+                'bb1-down-speed': bb1DWspeed,
+                'cedge2-tloc3-port': cEdge2TLOC3_Port,
+                'cedge2-tloc3-mask' : cedge2TLOC3_Mask,
+                'cedge2-tloc3-cidr': cedge2TLOC3_CIDR,
+                'cedge1-lan-net': cEdge1_VPN1_LAN,
+                'cedge2-lan-net': cEdge2_VPN1_LAN,
+                'sw-loop': swLoop,
+                'sw-mgmt-cidr': swMgmtIP_CIDR,
+                'sw-cedge1-port': swcEdge1_port,
+                'sw-cedge1-vlan': swcEdge1_vlan,
+                'sw-cedge2-port': swcEdge2_port,
+                'sw-cedge2-vlan': swcEdge2_vlan,
+                'sw-mpls-port': swMPLS_port,
+                'sw-remote-con-net1': swOpenGear1,
+                'sw-remote-con-net2': swOpenGear2,
+                'sw-mgmt-vlan' : swMgmtVLAN,
                 
-            # }
+            }
 
-            # manualReplacements = {re.compile(r'\b{}\b'.format(pattern), re.IGNORECASE): value for pattern, value in stringRegexPatt.items()}
+            manualReplacements = {re.compile(r'\b{}\b'.format(pattern), re.IGNORECASE): value for pattern, value in stringRegexPatt.items()}
 
             for para in wordDOC.paragraphs:
                 if any(run.font.color.rgb == RGBColor(255, 0, 0) for run in para.runs):
@@ -193,11 +193,11 @@ def chooseDocx(rowText, ignoredStrings=""):
                             authLog.info(f"Replacing '{wordString}' with '{csvString}'")
                             para.text = re.sub(r'\b{}\b'.format(re.escape(wordString)), csvString, para.text, flags=re.IGNORECASE)
 
-                    # for placeholder, replacement in manualReplacements.items():
-                    #     if placeholder.search(para.text):
-                    #         print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
-                    #         authLog.info(f"Replacing '{placeholder.pattern}' with '{replacement}'")
-                    #         para.text = placeholder.sub(replacement, para.text)
+                    for placeholder, replacement in manualReplacements.items():
+                        if placeholder.search(para.text):
+                            print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
+                            authLog.info(f"Replacing '{placeholder.pattern}' with '{replacement}'")
+                            para.text = placeholder.sub(replacement, para.text)
 
             for table in wordDOC.tables:
                 for row in table.rows:
@@ -211,11 +211,11 @@ def chooseDocx(rowText, ignoredStrings=""):
                                         authLog.info(f"Replacing in Table: '{wordString}' with '{csvString}'")
                                         paragraph.text = re.sub(r'\b{}\b'.format(re.escape(wordString)), csvString, paragraph.text, flags=re.IGNORECASE)
 
-                                # for placeholder, replacement in manualReplacements.items():
-                                #     if placeholder.search(paragraph.text):
-                                #         print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
-                                #         authLog.info(f"Replacing in Table: '{placeholder.pattern}' with '{replacement}'")
-                                #         paragraph.text = placeholder.sub(replacement, paragraph.text)
+                                for placeholder, replacement in manualReplacements.items():
+                                    if placeholder.search(paragraph.text):
+                                        print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
+                                        authLog.info(f"Replacing in Table: '{placeholder.pattern}' with '{replacement}'")
+                                        paragraph.text = placeholder.sub(replacement, paragraph.text)
 
             newWordDoc = f"{hostname}_ImplementationPlan.docx"
             wordDOC.save(newWordDoc)
