@@ -8,6 +8,8 @@ import csv
 import json
 import traceback
 
+removeCIDR_Patt = r'/\d{2}'
+
 def chooseCSV():
     ignoreStrings = re.compile(r'(FALSE|TRUE|100000|^100$|full|biz-internet|private5|TPX|core|^ge0\/0$|^ge0\/1$|^ge0\/1$|^ge0\/2$|^ge0\/3$)')
     csvDataList = []
@@ -86,8 +88,8 @@ def chooseDocx(rowText, ignoredStrings=""):
             swHost = input("Please input the Core Switch Hostname: ")
             swLoop = input("Please input the loopback0 ip address of the Core Switch: ")
             swMgmtVLAN = input("Please input the Core Switch Management VLAN: ")
-            swMgmtIP = input("Please input the  VLAN 1500 gateway ip address: ")
-            swMgmtIP_CIDR = input("Please input VLAN1500 CIDR (/30): ")
+            swMgmtIP = input(f"Please input the VLAN {swMgmtVLAN} gateway ip address: ")
+            swMgmtIP_CIDR = input(f"Please input VLAN {swMgmtVLAN} CIDR (/25): ")
             swcEdge1_port = input("Please input the connection to sdw-01 gi0/0/0 in VPN 1 (sw-cedge1-port): ")
             swcEdge1_vlan = input("Please input the VLAN, 1101 if possible (sw-cedge1-vlan): ")
             swcEdge2_port = input("Please input the connection to sdw-02 gi0/0/0 in VPN 1 (sw-cedge2-port): ")
@@ -100,7 +102,14 @@ def chooseDocx(rowText, ignoredStrings=""):
 
             for index, item in enumerate(rowText):
                 print(f"This is rowText[{index}] with string: {item}")
-            # os.system("PAUSE")
+            rowText[4] = re.sub(removeCIDR_Patt, '', rowText[4])
+            rowText[14] = re.sub(removeCIDR_Patt, '', rowText[14])
+            rowText[25] = re.sub(removeCIDR_Patt, '', rowText[25])
+            rowText[37] = re.sub(removeCIDR_Patt, '', rowText[37])
+            print(f"\nThis is After change:")
+            for index, item in enumerate(rowText):
+                print(f"rowText[{index}] with string: {item}")
+            os.system("PAUSE")
             replaceText = {
                 'cedge1-serial-no': f'{rowText[0]}',
                 'cedge1-device-ip': f'{rowText[1]}',
@@ -147,6 +156,7 @@ def chooseDocx(rowText, ignoredStrings=""):
                 #'cEdge2-loop': f'{rowText[28]}', # Changed to rowText[28] since we only need the IP, no prefix-length
                 #'site-no': f'{rowText[42]}'
             }
+
             print(json.dumps(replaceText, indent=4))
             os.system("PAUSE")
 
@@ -179,7 +189,7 @@ def chooseDocx(rowText, ignoredStrings=""):
                 'sw-remote-con-net1': swOpenGear1,
                 'sw-remote-con-net2': swOpenGear2,
                 'sw-mgmt-vlan' : swMgmtVLAN,
-                
+                'cedge2-tloc3-ip': f'{rowText[36]}'
             }
 
             manualReplacements = {re.compile(r'\b{}\b'.format(pattern), re.IGNORECASE): value for pattern, value in stringRegexPatt.items()}
