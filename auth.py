@@ -1,12 +1,14 @@
 
 from netmiko.exceptions import NetMikoAuthenticationException, NetMikoTimeoutException
 from functions import checkYNInput,validateIP,requestLogin,checkReachPort22
-from log import logConfiguration
-
+from strings import greetingString
+from log import *
+from log import invalidIPLog
+import socket
 import traceback
 import csv
 import os
-import logging.config
+import logging
 
 username = ""
 execPrivPassword = ""
@@ -14,8 +16,6 @@ netDevice = {}
 validIPs = []
 
 def Auth():
-    logging.config.dictConfig(logConfiguration)
-    authLog = logging.getLogger('infoLog')
     global username, execPrivPassword, netDevice, validIPs
 
     manualInput = input("\nDo you want to choose a CSV file?(y/n):")
@@ -62,6 +62,7 @@ def Auth():
     else:
         authLog.info(f"User decided to manually enter the IP Addresses.")
         os.system("CLS")
+        greetingString()
         while True:
             deviceIPs = input("\nPlease enter the devices IPs separated by commas: ")
             deviceIPsList = deviceIPs.split(',')
