@@ -54,6 +54,7 @@ def checkReachPort22(ip):
             print(f"Device {ip} is not reachable on port TCP 22, will be skipped.")
             authLog.error(f"Device IP: {ip}, is not reachable on port TCP 22.")
             authLog.debug(traceback.format_exc())
+            return None
 
     except Exception as error:
         print("Error occurred while checking device reachability:", error,"\n")
@@ -63,46 +64,45 @@ def checkReachPort22(ip):
     finally:
         connTest.close()
 
-def requestLogin(validIPs):
+def requestLogin(swHostname):
     while True:
         try:
             username = input("Please enter your username: ")
             password = getpass.getpass("Please enter your password: ")
             execPrivPassword = getpass.getpass("Please input your enable password: ")
 
-            for deviceIP in validIPs:
-                netDevice = {
-                    'device_type': 'cisco_xe',
-                    'ip': deviceIP,
-                    'username': username,
-                    'password': password,
-                    'secret': execPrivPassword
-                }
-                # print(f"This is netDevice: {netDevice}\n")
-                # print(f"This is deviceIP: {deviceIP}\n")
+            netDevice = {
+                'device_type': 'cisco_xe',
+                'ip': swHostname,
+                'username': username,
+                'password': password,
+                'secret': execPrivPassword
+            }
+            # print(f"This is netDevice: {netDevice}\n")
+            # print(f"This is swHostname: {swHostname}\n")
 
-                # sshAccess = ConnectHandler(**netDevice)
-                # print(f"Login successful! Logged to device {deviceIP} \n")
-                authLog.info(f"Successful saved credentials for username: {username}")
+            # sshAccess = ConnectHandler(**netDevice)
+            # print(f"Login successful! Logged to device {swHostname} \n")
+            authLog.info(f"Successful saved credentials for username: {username}")
 
-            return validIPs, username, netDevice
+            return swHostname, username, netDevice
 
         except NetMikoAuthenticationException:
             print("\n Login incorrect. Please check your username and password")
             print(" Retrying operation... \n")
-            authLog.error(f"Failed to authenticate - remote device IP: {deviceIP}, Username: {username}")
+            authLog.error(f"Failed to authenticate - remote device IP: {swHostname}, Username: {username}")
             authLog.debug(traceback.format_exc())
 
         except NetMikoTimeoutException:
             print("\n Connection to the device timed out. Please check your network connectivity and try again.")
             print(" Retrying operation... \n")
-            authLog.error(f"Connection timed out, device not reachable - remote device IP: {deviceIP}, Username: {username}")
+            authLog.error(f"Connection timed out, device not reachable - remote device IP: {swHostname}, Username: {username}")
             authLog.debug(traceback.format_exc())
 
         except socket.error:
             print("\n IP address is not reachable. Please check the IP address and try again.")
             print(" Retrying operation... \n")
-            authLog.error(f"Remote device unreachable - remote device IP: {deviceIP}, Username: {username}")
+            authLog.error(f"Remote device unreachable - remote device IP: {swHostname}, Username: {username}")
             authLog.debug(traceback.format_exc())
 
 def delStringFromFile(filePath, stringToDel):

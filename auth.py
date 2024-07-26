@@ -13,28 +13,23 @@ import logging
 username = ""
 execPrivPassword = ""
 netDevice = {}
-validIPs = []
+swHostname = ""
 
-def Auth():
-    global username, execPrivPassword, netDevice, validIPs
+def Auth(swHostname1):
+    global username, execPrivPassword, netDevice, swHostname
+
+    swHostname = swHostname1
 
     os.system("CLS")
     greetingString()
     while True:
-        deviceIPs = input("\nPlease enter the devices IPs/hostnames separated by commas: ")
-        deviceIPsList = deviceIPs.split(',')
+        swHostname
+        validateIP(swHostname) # True or False
+        swHostname = checkReachPort22(swHostname)
+        authLog.error(f"User {username} input the following invalid IP: {swHostname}")
+        authLog.debug(traceback.format_exc())
+        break
+        
+    swHostname, username, netDevice = requestLogin(swHostname)
 
-        for ip in deviceIPsList:
-            ip = ip.strip()
-            if validateIP(ip):
-                IPreachChecked = checkReachPort22(ip)
-                validIPs.append(IPreachChecked)
-            else:
-                print(f"Invalid IP address format: {ip}, will be skipped.")
-                authLog.error(f"User {username} input the following invalid IP: {ip}")
-                authLog.debug(traceback.format_exc())
-        if validIPs:
-            break
-    validIPs, username, netDevice = requestLogin(validIPs)
-
-    return validIPs,username,netDevice
+    return swHostname,username,netDevice

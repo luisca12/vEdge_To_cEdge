@@ -55,16 +55,17 @@ def chooseCSV():
     return mergedData
 
 def chooseDocx(rowText):
-    validIPs, username, netDevice = Auth()
-    shHostnameOut, netVlan1101, netVlan1103, shIntDesSDWOut, shIntDesCONOut1, shIntStatMPLSOut1, shVlanMgmtIP, shVlanMgmtCIDR, shLoop0Out = shCoreInfo(validIPs, username, netDevice)
+    print(f"This is rowText[12]: {rowText[12]}")
+    swHostname, username, netDevice = Auth(rowText[12])
+    shHostnameOut, netVlan1101, netVlan1103, shIntDesSDWOut, shIntDesCONOut1, shIntStatMPLSOut1, shVlanMgmtIP, shVlanMgmtCIDR, shLoop0Out = shCoreInfo(swHostname, username, netDevice)
 
-    print(f"="*70)
-    print(f"INFO: Location: {rowText[3]}")
+    print(f"\n","="*76)
+    print(f"INFO: Location: {rowText[3]}\n")
 
     print(f"INFO: TPX Circuit Information: {rowText[65]}\n")
 
-    print(f"INFO: LUM Circuit Information {rowText[28]}\n")
-    print(f"="*70)
+    print(f"INFO: LUM Circuit Information {rowText[28]}")
+    print(f"="*76, "\n")
 
     while True:
         try:
@@ -110,13 +111,16 @@ def chooseDocx(rowText):
             print("rowText 44:", rowText[44], "rowText 59:", rowText[59])
             os.system("PAUSE")
 
-            print("\nrowText 6:", rowText[6], "rowText 29:", rowText[29], "rowText 48:", rowText[48], "rowText 79:", rowText[79])
+            print("rowText 6:", rowText[6], "rowText 18:", rowText[18], "rowText 29:", rowText[29], \
+                  f"rowText 48:", rowText[48], "rowText 79:", rowText[79],"")
             print("After changes:")
             rowText[6] = re.sub(removeCIDR_Patt, '', rowText[6])
+            rowText[18] = re.sub(removeCIDR_Patt, '', rowText[18])
             rowText[29] = re.sub(removeCIDR_Patt, '', rowText[29])
             rowText[48] = re.sub(removeCIDR_Patt, '', rowText[48])
             rowText[79] = re.sub(removeCIDR_Patt, '', rowText[79])
-            print("rowText 6:", rowText[6], "rowText 29:", rowText[29], "rowText 48:", rowText[48], "rowText 79:", rowText[79])
+            print("rowText 6:", rowText[6], "rowText 18:", rowText[18], "rowText 29:", rowText[29], \
+                  f"rowText 48:", rowText[48], "rowText 79:", rowText[79],"")
             os.system("PAUSE")
 
             cedge2TLOC3_List = rowText[66]
@@ -140,7 +144,7 @@ def chooseDocx(rowText):
                 'cedge2-tloc3-ext-ip' : f'{rowText[15]}',
                 'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[17]}',
                 'cedge1-tloc3-ip'	: f'{rowText[18]}',
-                'mpls-ce1-ips' : f'{rowText[29]}',
+                'mpls-ce1-ip' : f'{rowText[29]}',
                 'mpls-speed' : f'{rowText[35]}',
                 'latitude' : f'{rowText[38]}',
                 'longitude' : f'{rowText[39]}',
@@ -205,6 +209,7 @@ def chooseDocx(rowText):
                             para.text = re.sub(r'\b{}\b'.format(re.escape(wordString)), csvString, para.text, flags=re.IGNORECASE)
 
                     for placeholder, replacement in manualReplacements.items():
+                        replacement = str(replacement)
                         if placeholder.search(para.text):
                             print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
                             authLog.info(f"Replacing '{placeholder.pattern}' with '{replacement}'")
@@ -223,6 +228,7 @@ def chooseDocx(rowText):
                                         paragraph.text = re.sub(r'\b{}\b'.format(re.escape(wordString)), csvString, paragraph.text, flags=re.IGNORECASE)
 
                                 for placeholder, replacement in manualReplacements.items():
+                                    replacement = str(replacement)
                                     if placeholder.search(paragraph.text):
                                         print(f"Replacing '{placeholder.pattern}' with '{replacement}'")
                                         authLog.info(f"Replacing in Table: '{placeholder.pattern}' with '{replacement}'")
@@ -242,4 +248,4 @@ def chooseDocx(rowText):
 
         except Exception as error:
             print(f"ERROR: {error}\n", traceback.format_exc())
-            authLog.error(f"Wasn't possible to choose the DOCX file, error message: {error}\n", traceback.format_exc())
+            authLog.error(f"Wasn't possible to choose the DOCX file, error message: {error}\n{traceback.format_exc()}")
