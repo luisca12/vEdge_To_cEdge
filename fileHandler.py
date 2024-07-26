@@ -58,13 +58,13 @@ def chooseDocx(rowText):
     validIPs, username, netDevice = Auth()
     shHostnameOut, netVlan1101, netVlan1103, shIntDesSDWOut, shIntDesCONOut1, shIntStatMPLSOut1, shVlanMgmtIP, shVlanMgmtCIDR, shLoop0Out = shCoreInfo(validIPs, username, netDevice)
 
-    print(f"="*50)
+    print(f"="*70)
     print(f"INFO: Location: {rowText[3]}")
 
     print(f"INFO: TPX Circuit Information: {rowText[65]}\n")
 
     print(f"INFO: LUM Circuit Information {rowText[28]}\n")
-    print(f"="*50)
+    print(f"="*70)
 
     while True:
         try:
