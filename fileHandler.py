@@ -2,7 +2,7 @@ from log import authLog
 from docx import Document
 from docx.shared import RGBColor
 from auth import Auth
-from commandsCLI import shCoreInfo
+from commandsCLI import shCoreInfo, shIntDesSDW
 
 import re
 import os
@@ -56,7 +56,7 @@ def chooseCSV():
 
 def chooseDocx(rowText):
     validIPs, username, netDevice = Auth()
-    netVlan1101, netVlan1103 = shCoreInfo(validIPs, username, netDevice)
+    shHostnameOut, netVlan1101, netVlan1103, shIntDesSDWOut, shIntDesCONOut1, shIntStatMPLSOut1, shVlanMgmtIP, shVlanMgmtCIDR, shLoop0Out = shCoreInfo(validIPs, username, netDevice)
 
     print(f"="*50)
     print(f"INFO: Location: {rowText[3]}")
@@ -86,19 +86,13 @@ def chooseDocx(rowText):
             cEdge2TLOC3_Port = input(f"Please input the cedge2-tloc3-port (TenGigabitEthernet0/0/5 or GigabitEthernet0/0/1 for {bb1Carrier} port): ")
             print("=" * 61,"\n\tINFO: Now begins information of the Core Switch")
             print("=" * 61)
-            swLoop = input("Please input the loopback0 ip address of the Core Switch: ")
-            swMgmtVLAN = input("Please input the Core Switch Management VLAN (VLAN 1500): ")
-            swMgmtIP = input(f"Please input the VLAN {swMgmtVLAN} gateway ip address: ")
-            swMgmtIP_CIDR = input(f"Please input VLAN {swMgmtVLAN} CIDR (For example: /25): ")
-            swcEdge1_port = input("Please input the connection to sdw-01 gi0/0/0 in VPN 1 from the switch (sw-cedge1-port): ")
-            swcEdge1_vlan = input("Please input the VLAN, 1101 if possible (sw-cedge1-vlan): ")
-            swcEdge2_port = input("Please input the connection to sdw-02 gi0/0/0 in VPN 1 from the switch (sw-cedge2-port): ")
-            swcEdge2_vlan = input("Please input the VLAN, 1103 if possible (sw-cedge2-vlan): ")
-            swMPLS_port = input("Please input the switch port connected to Lumen circuit (sw-mpls-port): ")
-            swcEdge1_mplsPort = input("Please input the Switch port for cEdge1 connection to Lumen (sw-cEdge1-mpls-port): ")
-            swcEdge2_mplsPort = input("Please input the Switch port for cEdge2 connection to Lumen (sw-cEdge2-mpls-port): ")
-            swOpenGear1 = input("Please input the interface to OpenGear #1 (sw-remote-con-net1): ")
-            swOpenGear2 = input("Please input the interface to OpenGear #2 (sw-remote-con-net2): ")
+            print(f"{shHostnameOut}{shIntDesSDW}\n{shIntDesSDWOut}\n")
+            swcEdge1_vlan = input("Please input the VLAN for SDW-03, 1101 if possible: ")
+            swcEdge2_vlan = input("Please input the VLAN for SDW-04, 1103 if possible: ")
+            swcEdge1_port = input("Please input the connection to SDW-03 gi0/0/0 in VPN 1 from the switch: ")
+            swcEdge2_port = input("Please input the connection to SDW-04 gi0/0/0 in VPN 1 from the switch: ")
+            swcEdge1_mplsPort = input("Please input the Switch port for SDW-03 gi0/0/2 connection to Lumen: ")
+            swcEdge2_mplsPort = input("Please input the Switch port for SDW-04 gi0/0/2 connection to Lumen: ")
 
             print("\nrowText 2:", rowText[2], "rowText 17:", rowText[17])
             print("After changes:")
@@ -174,7 +168,7 @@ def chooseDocx(rowText):
                 'city': city,
                 'state': state,
                 'site-code': siteCode,
-                'sw-mgmt-ip' : swMgmtIP,
+                'sw-mgmt-ip' : shVlanMgmtIP,
                 'sw-host' : f'{rowText[12]}',
                 'sw-cEdge1-mpls-port': swcEdge1_mplsPort,
                 'sw-cEdge2-mpls-port': swcEdge2_mplsPort,
@@ -187,16 +181,16 @@ def chooseDocx(rowText):
                 'cedge2-tloc3-cidr': cedge2TLOC3_CIDR_STR,
                 'cedge1-lan-net': netVlan1101,
                 'cedge2-lan-net': netVlan1103,
-                'sw-loop': swLoop,
-                'sw-mgmt-cidr': swMgmtIP_CIDR,
+                'sw-loop': shLoop0Out,
+                'sw-mgmt-cidr': shVlanMgmtCIDR,
                 'sw-cedge1-port': swcEdge1_port,
                 'sw-cedge1-vlan': swcEdge1_vlan,
                 'sw-cedge2-port': swcEdge2_port,
                 'sw-cedge2-vlan': swcEdge2_vlan,
-                'sw-mpls-port': swMPLS_port,
-                'sw-remote-con-net1': swOpenGear1,
-                'sw-remote-con-net2': swOpenGear2,
-                'sw-mgmt-vlan' : swMgmtVLAN
+                'sw-mpls-port': shIntStatMPLSOut1[0],
+                'sw-remote-con-net1': shIntDesCONOut1[0],
+                'sw-remote-con-net2': shIntDesCONOut1[1],
+                'sw-mgmt-vlan' : '1500'
             }
 
             manualReplacements = {re.compile(r'\b{}\b'.format(pattern), re.IGNORECASE): value for pattern, value in stringRegexPatt.items()}
