@@ -1,4 +1,6 @@
 import logging
+
+import logging
 import logging.config
 
 logConfiguration = {
@@ -49,3 +51,4 @@ logConfiguration = {
 
 logging.config.dictConfig(logConfiguration)
 authLog = logging.getLogger('infoLog')
+invalidIPLog = logging.getLogger('errorLog')
