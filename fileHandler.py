@@ -22,9 +22,7 @@ ndlmPath1 = "NDLM_Template.xlsx"
 ndlmPath2 = "NDLM_Tier2_Template.xlsx"
 
 def chooseCSV():
-    # ignoreStrings = re.compile(r'(FALSE|TRUE|100000|^100$|full|biz-internet|private5|TPX|core|^ge0\/0$|^ge0\/1$|^ge0\/1$|^ge0\/2$|^ge0\/3$)')
     csvDataList = []
-    # ignoredStrMatchList = []
 
     for i in range(2):
         while True:
@@ -137,10 +135,12 @@ def chooseDocx(rowText):
             cedge2TLOC3_MASK_STR = ipaddress.IPv4Network(cedge2TLOC3_STR, strict=False)
             cedge2TLOC3_MASK_STR = str(cedge2TLOC3_MASK_STR.netmask)
 
-            serialNumSDW03 = PID_SDW03 + serialNumSDW03
-            serialNumSDW04 = PID_SDW04 + serialNumSDW04
+            serialNumSDW03New = PID_SDW03 + serialNumSDW03
+            serialNumSDW04New = PID_SDW04 + serialNumSDW04
 
             snmpLocation = f'{rowText[3]}'
+            cedge1_host = f'{rowText[2]}'
+            cedge2_host = f'{rowText[44]}'
 
             replaceText = {
                 'cedge1-host' : f'{rowText[2]}',
@@ -173,8 +173,8 @@ def chooseDocx(rowText):
             os.system("PAUSE")
 
             stringRegexPatt = {
-                'cedge1-serial-no' : serialNumSDW03,
-                'cedge2-serial-no' : serialNumSDW04,
+                'cedge1-serial-no' : serialNumSDW03New,
+                'cedge2-serial-no' : serialNumSDW04New,
                 'cedge1-loop' : cEdge1Loop,
                 'cedge2-loop' : cEdge2Loop,
                 'site-no'	: siteNo,
@@ -248,7 +248,28 @@ def chooseDocx(rowText):
             authLog.info(f"Replacements made successfully in DOCX file and saved as: {newWordDoc}")
             print(f"INFO: Replacements made successfully in DOCX file and saved as: {newWordDoc}")
 
-            return siteCode, serialNumSDW01, serialNumSDW02, serialNumSDW03, serialNumSDW04, cEdge1Loop, cEdge2Loop, snmpLocation
+            return {
+                'site-code': siteCode,
+                'serialNumSDW01': serialNumSDW01,
+                'serialNumSDW02': serialNumSDW02,
+                'serialNumSDW03': serialNumSDW03,
+                'serialNumSDW04': serialNumSDW04,
+                'cedge1-loop': cEdge1Loop,
+                'cedge2-loop': cEdge2Loop,
+                'snmp-location': snmpLocation,
+                'city': city,
+                'state': state,
+                'site-no': siteNo,
+                'cedge1-host': cedge1_host,
+                'cedge2-host': cedge2_host,
+                'sw-host' : f'{rowText[12]}',
+                'sw-mpls-port' : shIntStatMPLSOut1[0],
+                'cedge2-tloc3-port': cEdge2TLOC3_Port,
+                'sw-cedge1-port' : swcEdge1_port,
+                'sw-cedge2-port' : swcEdge2_port,
+                'sw-cedge1-mpls-port' : swcEdge1_mplsPort,
+                'sw-cedge2-mpls-port' : swcEdge2_mplsPort
+            }
 
         except FileNotFoundError:
             print("File not found. Please check the file path and try again.")
@@ -297,26 +318,62 @@ def modNDLM(siteCode, serialNumSDW01, serialNumSDW02, serialNumSDW03, serialNumS
         print(f"ERROR: {error}\n", traceback.format_exc())
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
-def modNDLM2(siteCode):
+def modNDLM2(siteCode, cEdge1Loop, cEdge2Loop, snmpLocation, city, state, siteNo,
+             cedge1_host, cedge2_host, sw_host, sw_mpls_port, cEdge2TLOC3_Port,
+             swcEdge1_port, swcEdge2_port, swcEdge1_mplsPort, swcEdge2_mplsPort
+            ):
     try:
-        wordFile = f"{siteCode}_ImplementationPlan.docx"
-        wordDOC = Document(wordFile)
+        # Below are the variables found on the XLSX
+        # site-code
+        # snmp-location
+        # city
+        # state
+        # site-no
+        # cedge1-host
+        # cedge1-loop
+        # cedge2-host
+        # cedge2-loop
+        # sw-host
+        # sw-mpls-port
+        # cedge2-tloc3-port
+        # sw-cedge1-port
+        # sw-cedge2-port
+        # sw-cedge1-mpls-port
+        # sw-cedge2-mpls-port
 
-        ndlmFile = Workbook()
-        ndlmFileSheet = ndlmFile.active 
+        replaceText = {
+            'site-code' : f'{siteCode}',
+            'cedge1-loop' : f'{cEdge1Loop}',
+            'cedge2-loop' : f'{cEdge2Loop}',
+            'snmp-location' : f'{snmpLocation}',
+            'city': city,
+            'state': state,
+            'site-no': siteNo,
+            'cedge1-host': cedge1_host,
+            'cedge2-host': cedge2_host,
+            'sw-host' : sw_host,
+            'sw-mpls-port' : sw_mpls_port,
+            'cedge2-tloc3-port': cEdge2TLOC3_Port,
+            'sw-cedge1-port' : swcEdge1_port,
+            'sw-cedge2-port' : swcEdge2_port,
+            'sw-cedge1-mpls-port' : swcEdge1_mplsPort,
+            'sw-cedge2-mpls-port' : swcEdge2_mplsPort
+        }
 
-        for i, table in enumerate(wordDOC.tables):
-            if table.cell(0,0).text.strip() == "SDWAN Tier 2 Site":
-                print(f"Found target table number: {i}")
-                for rowIndex, row in enumerate(table.rows):
-                    print(f"This is table number: {i}, rowIndex:{rowIndex}, row content: {[cell.text.strip() for cell in row.cells]}")
-                    for colIndex, cell in enumerate(row.cells):
-                        ndlmFileSheet.cell(row=rowIndex + 1, column=colIndex + 1, value=cell.text.strip())
-            else:
-                print(f"No string \"SDWAN Tier 2 Site\" was found in table #{i}")
-        
-        newNDLMFile = f'{siteCode}-NDLM-Tier2.xlsx'
-        ndlmFile.save(newNDLMFile)
+        ndlmFile = openpyxl.load_workbook(ndlmPath2)
+        ndlmFileSheet = ndlmFile.active
+
+        for row in ndlmFileSheet.iter_rows():
+            for cell in row:
+                if cell.value:
+                    cellValue = str(cell.value).strip()
+                    for key, value in replaceText.items():
+                        if key.lower() in cellValue.lower():
+                            cellValue = cellValue.replace(key, value)
+                    cell.value = cellValue
+
+            newNDLMFile = f'{siteCode}-NDLM-Tier2.xlsx'
+            ndlmFile.save(newNDLMFile)
 
     except FileNotFoundError:
         print("File not found. Please check the file path and try again.")
@@ -326,3 +383,33 @@ def modNDLM2(siteCode):
     except Exception as error:
         print(f"ERROR: {error}\n", traceback.format_exc())
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
+
+# def modNDLM2_Optional(siteCode):
+#     try:
+#         wordFile = f"{siteCode}_ImplementationPlan.docx"
+#         wordDOC = Document(wordFile)
+
+#         ndlmFile = Workbook()
+#         ndlmFileSheet = ndlmFile.active 
+
+#         for i, table in enumerate(wordDOC.tables):
+#             if table.cell(0,0).text.strip() == "SDWAN Tier 2 Site":
+#                 print(f"Found target table number: {i}")
+#                 for rowIndex, row in enumerate(table.rows):
+#                     print(f"This is table number: {i}, rowIndex:{rowIndex}, row content: {[cell.text.strip() for cell in row.cells]}")
+#                     for colIndex, cell in enumerate(row.cells):
+#                         ndlmFileSheet.cell(row=rowIndex + 1, column=colIndex + 1, value=cell.text.strip())
+#             else:
+#                 print(f"No string \"SDWAN Tier 2 Site\" was found in table #{i}")
+        
+#         newNDLMFile = f'{siteCode}-NDLM-Tier2.xlsx'
+#         ndlmFile.save(newNDLMFile)
+
+#     except FileNotFoundError:
+#         print("File not found. Please check the file path and try again.")
+#         authLog.error(f"File not found in path {ndlmPath1}")
+#         authLog.error(traceback.format_exc())
+
+#     except Exception as error:
+#         print(f"ERROR: {error}\n", traceback.format_exc())
+#         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
