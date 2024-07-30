@@ -1,5 +1,6 @@
 # vEdge_To_cEdge
 This script is to aumatically generate the Tier 2 implementation plan for the migrations from vEdge to cEdge.
+- [Updates](#updates)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Use](#use)
