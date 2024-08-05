@@ -7,15 +7,14 @@ def greetingString():
         print("    Welcome to the automated Tier 2-Implementation Plan generation program ")
         print('  ------------------------------------------------------------------------- ')
 
-def menuString(deviceIP, username):
-        os.system("CLS")
-        print(f"Connected to: {deviceIP} as {username}\n")
+def menuString():
         print('  -------------------------------------------------------------- ')
         print('\t\tMenu - Please choose an option')
         print('\t\t  Only numbers are accepted')
         print('  -------------------------------------------------------------- ')
-        print('  >\t\t1. To run the following commands:\t       <')  
-        print('  >\t\t\t2. Exit the program\t\t       <')
+        print('  >\t\tPlease choose the current Model:\t       <')  
+        print('  >\t\t\t Option 1: vEdge\t\t       <')
+        print('  >\t\t\t Option 2: ISR\t\t\t       <')
         print('  -------------------------------------------------------------- \n')
 
 def inputErrorString():
@@ -24,8 +23,4 @@ def inputErrorString():
         print('>      INPUT ERROR: Only numbers are allowed       <')
         print('  ------------------------------------------------- ')
 
-def shRunString(validIPs):
-        print('  ------------------------------------------------- ')  
-        print(f'> Taking a show run of the device {validIPs} <')
-        print('>\t   Please wait until it finishes\t  <')
-        print('  ------------------------------------------------- ')
+menuString()
