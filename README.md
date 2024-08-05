@@ -8,6 +8,9 @@ This script is to aumatically generate the Tier 2 implementation plan for the mi
 
 ### Updates
 #### Version 1.5
+- Support for vEdge added.
+    - Now vEdges and ISRs are supported.
+#### Version 1.5
 - The function to create the below files was added:
     - NDLM XLSX file
     - NDLM Tier 2 XLSX file
