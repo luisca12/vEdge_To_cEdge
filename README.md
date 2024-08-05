@@ -7,7 +7,7 @@ This script is to aumatically generate the Tier 2 implementation plan for the mi
 - [License](#license)
 
 ### Updates
-#### Version 1.5
+#### Version 1.6
 - Support for vEdge added.
     - Now vEdges and ISRs are supported.
 #### Version 1.5
