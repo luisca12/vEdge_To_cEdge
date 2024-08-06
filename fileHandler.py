@@ -21,6 +21,9 @@ PID_SDW04 = 'C8300-1N1S-4T2X-'
 ndlmPath1 = "NDLM_Template.xlsx"
 ndlmPath2 = "NDLM_Tier2_Template.xlsx"
 
+sdw03Template = "sdw-03-template.csv"
+sdw04Template = "sdw-04-template.csv"
+
 def chooseCSV():
     csvDataList = []
 
@@ -271,7 +274,50 @@ def chooseDocx_ISR(rowText):
                 'sw-cedge1-mpls-port' : swcEdge1_mplsPort,
                 'sw-cedge2-mpls-port' : swcEdge2_mplsPort,
                 'vedge1-loop' : f'{rowText[9]}',
-                'vedge2-loop' : f'{rowText[51]}'
+                'vedge2-loop' : f'{rowText[51]}',
+
+                'cedge1-rtr-ip' : f'{rowText[6]}',
+                'cEdge-asn' : f'{rowText[8]}',
+                'cedge1-sw-ip' : f'{rowText[11]}',
+                'switch-asn' : f'{rowText[13]}',
+                'mpls-pe-ip' : f'{rowText[14]}',
+                'cedge2-tloc3-ext-ip' : f'{rowText[15]}',
+                'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[17]}',
+                'cedge1-tloc3-ip'	: f'{rowText[18]}',
+                'mpls-ce1-ip' : f'{rowText[29]}',
+                'mpls-speed' : f'{rowText[35]}',
+                'latitude' : f'{rowText[38]}',
+                'longitude' : f'{rowText[39]}',
+                # Here starts the second CSV file #
+                'bb1-down-speed' : f'{rowText[76]}',
+                'cedge2-rtr-ip' : f'{rowText[48]}',
+                'cedge2-sw-ip' : f'{rowText[53]}',	
+                'cedge2-tloc3-gate' : f'{rowText[57]}',	
+                'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
+                'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
+                'bb1-up-speed' : f'{rowText[75]}',	
+                'mpls-ce2-ip'	: f'{rowText[79]}',
+
+                'cedge1-serial-no' : serialNumSDW03New,
+                'cedge2-serial-no' : serialNumSDW04New,
+                'sw-mgmt-ip' : shVlanMgmtIP,
+                'mpls-circuitid':  mplsCircuitID,
+                'bb1-carrier': bb1Carrier,
+                'bb1-circuitid': bb1Circuitid,
+                'cedge2-tloc3-port': cEdge2TLOC3_Port,
+                'cedge2-tloc3-ip': cedge2TLOC3_IP_STR,
+                'cedge2-tloc3-mask' : cedge2TLOC3_MASK_STR,
+                'cedge2-tloc3-cidr': cedge2TLOC3_CIDR_STR,
+                'cedge1-lan-net': netVlan1101,
+                'cedge2-lan-net': netVlan1103,
+                'sw-loop': shLoop0Out,
+                'sw-mgmt-cidr': shVlanMgmtCIDR,
+                'sw-cedge1-vlan': swcEdge1_vlan,
+                'sw-cedge2-vlan': swcEdge2_vlan,
+                'sw-mpls-port': shIntStatMPLSOut1[0],
+                'sw-remote-con-net1': shIntDesCONOut1[0],
+                'sw-remote-con-net2': shIntDesCONOut1[1],
+                'sw-mgmt-vlan' : '1500'
             }
 
         except FileNotFoundError:
@@ -489,17 +535,60 @@ def chooseDocx_vEdge(rowText):
                 'site-no': siteNo,
                 'cedge1-host': cedge1_host,
                 'cedge2-host': cedge2_host,
-                'sw-host' : f'{rowText[13]}',
+                'sw-host' : f'{rowText[12]}',
                 'sw-mpls-port' : shIntStatMPLSOut1[0],
                 'cedge2-tloc3-port': cEdge2TLOC3_Port,
                 'sw-cedge1-port' : swcEdge1_port,
                 'sw-cedge2-port' : swcEdge2_port,
                 'sw-cedge1-mpls-port' : swcEdge1_mplsPort,
                 'sw-cedge2-mpls-port' : swcEdge2_mplsPort,
-                'vedge1-loop' : f'{rowText[10]}',
-                'vedge2-loop' : f'{rowText[55]}'
-            }
+                'vedge1-loop' : f'{rowText[9]}',
+                'vedge2-loop' : f'{rowText[51]}',
 
+                'cedge1-rtr-ip' : f'{rowText[6]}',
+                'cEdge-asn' : f'{rowText[8]}',
+                'cedge1-sw-ip' : f'{rowText[11]}',
+                'switch-asn' : f'{rowText[13]}',
+                'mpls-pe-ip' : f'{rowText[14]}',
+                'cedge2-tloc3-ext-ip' : f'{rowText[15]}',
+                'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[17]}',
+                'cedge1-tloc3-ip'	: f'{rowText[18]}',
+                'mpls-ce1-ip' : f'{rowText[29]}',
+                'mpls-speed' : f'{rowText[35]}',
+                'latitude' : f'{rowText[38]}',
+                'longitude' : f'{rowText[39]}',
+                # Here starts the second CSV file #
+                'bb1-down-speed' : f'{rowText[76]}',
+                'cedge2-rtr-ip' : f'{rowText[48]}',
+                'cedge2-sw-ip' : f'{rowText[53]}',	
+                'cedge2-tloc3-gate' : f'{rowText[57]}',	
+                'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
+                'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
+                'bb1-up-speed' : f'{rowText[75]}',	
+                'mpls-ce2-ip'	: f'{rowText[79]}',
+
+                'cedge1-serial-no' : serialNumSDW03New,
+                'cedge2-serial-no' : serialNumSDW04New,
+                'sw-mgmt-ip' : shVlanMgmtIP,
+                'mpls-circuitid':  mplsCircuitID,
+                'bb1-carrier': bb1Carrier,
+                'bb1-circuitid': bb1Circuitid,
+                'cedge2-tloc3-port': cEdge2TLOC3_Port,
+                'cedge2-tloc3-ip': cedge2TLOC3_IP_STR,
+                'cedge2-tloc3-mask' : cedge2TLOC3_MASK_STR,
+                'cedge2-tloc3-cidr': cedge2TLOC3_CIDR_STR,
+                'cedge1-lan-net': netVlan1101,
+                'cedge2-lan-net': netVlan1103,
+                'sw-loop': shLoop0Out,
+                'sw-mgmt-cidr': shVlanMgmtCIDR,
+                'sw-cedge1-vlan': swcEdge1_vlan,
+                'sw-cedge2-vlan': swcEdge2_vlan,
+                'sw-mpls-port': shIntStatMPLSOut1[0],
+                'sw-remote-con-net1': shIntDesCONOut1[0],
+                'sw-remote-con-net2': shIntDesCONOut1[1],
+                'sw-mgmt-vlan' : '1500'
+            }
+        
         except FileNotFoundError:
             print("File not found. Please check the file path and try again.")
             authLog.error(f"File not found in path {wordFile}")
@@ -615,32 +704,112 @@ def modNDLM2(siteCode, cEdge1Loop, cEdge2Loop, snmpLocation, city, state, siteNo
         print(f"ERROR: {error}\n", traceback.format_exc())
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
-# def modNDLM2_Optional(siteCode):
-#     try:
-#         wordFile = f"{siteCode}_ImplementationPlan.docx"
-#         wordDOC = Document(wordFile)
+def cEdgeTemplate(cedge1_serial_no, cedge1_loop, cedge1_host, snmp_location,
+        sw_host, sw_cedge1_port, cedge1_rtr_ip,
+        cEdge_asn, cedge1_sw_ip, switch_asn, sw_mgmt_ip,
+        mpls_pe_ip, cedge2_tloc3_ext_ip, cedge2_host, cedge1_tloc3_ip,
+        sw_cedge1_mpls_port, mpls_circuitid, mpls_ce1_ip, mpls_speed,
+        latitude, longitude, site_no, cedge2_serial_no,
+        cedge2_loop, cedge2_tloc3_port, bb1_down_speed,
+        sw_cedge2_port, cedge2_rtr_ip, cedge2_sw_ip, cedge2_tloc3_gate,
+        bb1_carrier, bb1_circuitid, cedge2_tloc3_ip, cedge2_tloc3_cidr,
+        bb1_up_speed, sw_cedge2_mpls_port, mpls_ce2_ip, site_code):
 
-#         ndlmFile = Workbook()
-#         ndlmFileSheet = ndlmFile.active 
+    newSDW03Template = f'{site_code}-SDW-03-Template.csv'
+    newSDW04Template = f'{site_code}-SDW-04-Template.csv'
 
-#         for i, table in enumerate(wordDOC.tables):
-#             if table.cell(0,0).text.strip() == "SDWAN Tier 2 Site":
-#                 print(f"Found target table number: {i}")
-#                 for rowIndex, row in enumerate(table.rows):
-#                     print(f"This is table number: {i}, rowIndex:{rowIndex}, row content: {[cell.text.strip() for cell in row.cells]}")
-#                     for colIndex, cell in enumerate(row.cells):
-#                         ndlmFileSheet.cell(row=rowIndex + 1, column=colIndex + 1, value=cell.text.strip())
-#             else:
-#                 print(f"No string \"SDWAN Tier 2 Site\" was found in table #{i}")
+    sdw03Replacements = {
+        'cedge1-serial-no': cedge1_serial_no,
+        'cedge1-loop': cedge1_loop,
+        'cedge1-host': cedge1_host,
+        'snmp-location': snmp_location,
+        'sw-host': sw_host,
+        'sw-cedge1-port': sw_cedge1_port,
+        'cedge1-rtr-ip': cedge1_rtr_ip,
+        'cEdge-asn': cEdge_asn,
+        'cedge1-sw-ip': cedge1_sw_ip,
+        'switch-asn': switch_asn,
+        'sw-mgmt-ip': sw_mgmt_ip,
+        'mpls-pe-ip': mpls_pe_ip,
+        'cedge2-tloc3-ext-ip': cedge2_tloc3_ext_ip,
+        'cedge2-host': cedge2_host,
+        'cedge1-tloc3-ip': cedge1_tloc3_ip,
+        'sw-cedge1-mpls-port': sw_cedge1_mpls_port,
+        'mpls-circuitid': mpls_circuitid,
+        'mpls-ce1-ip': mpls_ce1_ip,
+        'mpls-speed': mpls_speed,
+        'latitude': latitude,
+        'longitude': longitude,
+        'site-no': site_no
+        }
+    
+    sdw04Replacements = {
+        'cedge2-serial-no': cedge2_serial_no,
+        'cedge2-loop': cedge2_loop, 
+        'cedge2-host': cedge2_host,
+        'cedge2-tloc3-port': cedge2_tloc3_port,
+        'bb1-down-speed': bb1_down_speed,
+        'snmp-location': snmp_location,
+        'sw-host': sw_host,
+        'sw-cedge2-port': sw_cedge2_port,
+        'cedge2-rtr-ip': cedge2_rtr_ip,
+        'cEdge-asn': cEdge_asn,
+        'cedge2-sw-ip': cedge2_sw_ip,
+        'switch-asn': switch_asn,
+        'sw-mgmt-ip': sw_mgmt_ip,
+        'cedge2-tloc3-gate': cedge2_tloc3_gate,
+        'mpls-pe-ip': mpls_pe_ip,
+        'cedge1-host': cedge1_host,
+        'cedge2-tloc3-ext-ip': cedge2_tloc3_ext_ip,
+        'bb1-carrier': bb1_carrier,
+        'bb1-circuitid': bb1_circuitid,
+        'cedge2-tloc3-ip': cedge2_tloc3_ip,
+        'cedge2-tloc3-cidr': cedge2_tloc3_cidr,
+        'bb1-up-speed': bb1_up_speed,
+        'sw-cedge2-mpls-port': sw_cedge2_mpls_port, 
+        'mpls-circuitid': mpls_circuitid,
+        'mpls-ce2-ip': mpls_ce2_ip,
+        'mpls-speed': mpls_speed,
+        'latitude': latitude,
+        'longitude': longitude,
+        'site-no': site_no
+    }
+
+    try:
+        with open(sdw03Template, "r") as inputCSV, \
+            open(newSDW03Template, 'w') as outputCSV:
+            authLog.info(f"Generating {site_code}-SDW-03-Template")
+            print(f"INFO: Generating {site_code}-SDW-03-Template.")
+            csvReader = csv.reader(inputCSV)
+            csvWriter = csv.writer(outputCSV)   
+
+            for rows in csvReader:
+                rowData = []
+                for cell in rows:
+                    cellValue = str(cell).strip()
+                    for key, value in sdw03Replacements.items():
+                        if key.lower() in cellValue.lower():
+                            cellValue = cellValue.replace(key, value)
+                    rowData.append(cellValue)
+                csvWriter.writerow(rowData)
         
-#         newNDLMFile = f'{siteCode}-NDLM-Tier2.xlsx'
-#         ndlmFile.save(newNDLMFile)
+        with open(sdw04Template, "r") as inputCSV1, \
+            open(newSDW04Template, 'w') as outputCSV1:
+            authLog.info(f"Generating {site_code}-SDW-04-Template")
+            print(f"INFO: Generating {site_code}-SDW-04-Template.")
+            csvReader1 = csv.reader(inputCSV1)
+            csvWriter1 = csv.writer(outputCSV1)   
 
-#     except FileNotFoundError:
-#         print("File not found. Please check the file path and try again.")
-#         authLog.error(f"File not found in path {ndlmPath1}")
-#         authLog.error(traceback.format_exc())
+            for rows in csvReader1:
+                rowData1 = []
+                for cell in rows:
+                    cellValue1 = str(cell).strip()
+                    for key, value in sdw04Replacements.items():
+                        if key.lower() in cellValue1.lower():
+                            cellValue1 = cellValue1.replace(key, value)
+                    rowData1.append(cellValue1)
+                csvWriter1.writerow(rowData1)
 
-#     except Exception as error:
-#         print(f"ERROR: {error}\n", traceback.format_exc())
-#         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
+    except Exception as error:
+        print(f"ERROR: {error}\n", traceback.format_exc())
+        authLog.error(f"Error message: {error}\n", traceback.format_exc())
