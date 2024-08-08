@@ -431,15 +431,15 @@ def chooseDocx_vEdge(rowText):
                 'latitude' : f'{rowText[41]}',
                 'longitude' : f'{rowText[42]}',
                 # Here starts the second CSV file #
-                'cedge2-host'	: f'{rowText[44]}',
-                'bb1-down-speed' : f'{rowText[76]}',
-                'cedge2-rtr-ip' : f'{rowText[48]}',
-                'cedge2-sw-ip' : f'{rowText[53]}',	
-                'cedge2-tloc3-gate' : f'{rowText[57]}',	
+                'cedge2-host'	: f'{rowText[47]}',
+                'bb1-down-speed' : f'{rowText[82]}',
+                'cedge2-rtr-ip' : f'{rowText[51]}',
+                'cedge2-sw-ip' : f'{rowText[57]}',	
+                'cedge2-tloc3-gate' : f'{rowText[63]}',	
                 'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
                 'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
-                'bb1-up-speed' : f'{rowText[75]}',	
-                'mpls-ce2-ip'	: f'{rowText[79]}'
+                'bb1-up-speed' : f'{rowText[82]}',	
+                'mpls-ce2-ip'	: f'{rowText[85]}'
             }
 
             print(json.dumps(replaceText, indent=4))
@@ -542,8 +542,8 @@ def chooseDocx_vEdge(rowText):
                 'sw-cedge2-port' : swcEdge2_port,
                 'sw-cedge1-mpls-port' : swcEdge1_mplsPort,
                 'sw-cedge2-mpls-port' : swcEdge2_mplsPort,
-                'vedge1-loop' : f'{rowText[9]}',
-                'vedge2-loop' : f'{rowText[51]}',
+                'vedge1-loop' : f'{rowText[10]}',
+                'vedge2-loop' : f'{rowText[55]}',
 
                 'cedge1-rtr-ip' : f'{rowText[6]}',
                 'cEdge-asn' : f'{rowText[8]}',
@@ -559,13 +559,13 @@ def chooseDocx_vEdge(rowText):
                 'longitude' : f'{rowText[39]}',
                 # Here starts the second CSV file #
                 'bb1-down-speed' : f'{rowText[76]}',
-                'cedge2-rtr-ip' : f'{rowText[48]}',
-                'cedge2-sw-ip' : f'{rowText[53]}',	
-                'cedge2-tloc3-gate' : f'{rowText[57]}',	
+                'cedge2-rtr-ip' : f'{rowText[51]}',
+                'cedge2-sw-ip' : f'{rowText[57]}',	
+                'cedge2-tloc3-gate' : f'{rowText[63]}',	
                 'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
                 'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
-                'bb1-up-speed' : f'{rowText[75]}',	
-                'mpls-ce2-ip'	: f'{rowText[79]}',
+                'bb1-up-speed' : f'{rowText[82]}',	
+                'mpls-ce2-ip'	: f'{rowText[85]}',
 
                 'cedge1-serial-no' : serialNumSDW03New,
                 'cedge2-serial-no' : serialNumSDW04New,
@@ -611,7 +611,7 @@ def modNDLM(siteCode, serialNumSDW01, serialNumSDW02, serialNumSDW03, serialNumS
             'cedge2-loop' : f'{cEdge2Loop}',
             'snmp-location' : f'{snmpLocation}',
             'vedge1-loop': f'{vEdge1Loop}',
-            'vedge1-loop': f'{vEdge2Loop}'
+            'vedge2-loop': f'{vEdge2Loop}'
         }
 
         ndlmFile = openpyxl.load_workbook(ndlmPath1)
