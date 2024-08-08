@@ -19,6 +19,12 @@ def main():
                 docxValues = chooseDocx_vEdge(csvValues)
                 rowText = docxValues['rowText']
                 rowText1 = docxValues['rowText1']
+                for index, item in enumerate(rowText):
+                        print(f"rowText[{index}] with string: {item}")
+                os.system("PAUSE")
+                for index, item in enumerate(rowText1):
+                        print(f"rowText1[{index}] with string: {item}")
+                os.system("PAUSE")
                 # modNDLM(docxValues) , docxValues['serialNumSDW01'], docxValues['serialNumSDW02'], 
                 #         docxValues['serialNumSDW03'], docxValues['serialNumSDW04'], docxValues['cedge1-loop'], 
                 #         docxValues['cedge2-loop'], docxValues['snmp-location'], docxValues['vedge1-loop'], docxValues['vedge2-loop'])

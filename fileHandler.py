@@ -520,16 +520,6 @@ def chooseDocx_vEdge(rowText):
             wordDOC.save(newWordDoc)
             authLog.info(f"Replacements made successfully in DOCX file and saved as: {newWordDoc}")
             print(f"INFO: Replacements made successfully in DOCX file and saved as: {newWordDoc}")
-
-            returnList.append(rowText)
-
-            for index, item in enumerate(rowText):
-                print(f"rowText[{index}] with string: {item}")
-
-            print("\n")
-
-            for index, item in enumerate(returnList):
-                print(f"returnList[{index}] with string: {item}")
             
             os.system("PAUSE")
 
@@ -570,7 +560,7 @@ def chooseDocx_vEdge(rowText):
             ]
 
             return {
-                'rowText' : returnList,
+                'rowText' : rowText,
                 'rowText1' :  manualReplaceList
             }
 
@@ -674,6 +664,13 @@ def modNDLM2(siteCode, cEdge1Loop, cEdge2Loop, snmpLocation, city, state, siteNo
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
 def cEdgeTemplate(rowText, rowText1):
+
+    for index, item in enumerate(rowText):
+        print(f"rowText[{index}] with string: {item}")
+    
+    for index, item in enumerate(rowText):
+        print(f"rowText1[{index}] with string: {item}")
+    os.system("PAUSE")
     
     newSDW03Template = f'Outputs/{rowText1[9]}-SDW-03-Template.csv'
     newSDW04Template = f'Outputs/{rowText1[9]}-SDW-04-Template.csv'
