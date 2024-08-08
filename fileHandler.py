@@ -249,7 +249,7 @@ def chooseDocx_ISR(rowText):
                                         authLog.info(f"Replacing in Table: '{placeholder.pattern}' with '{replacement}'")
                                         paragraph.text = placeholder.sub(replacement, paragraph.text)
 
-            newWordDoc = f"{siteCode}_ImplementationPlan.docx"
+            newWordDoc = f"Outputs/{siteCode}_ImplementationPlan.docx"
             wordDOC.save(newWordDoc)
             authLog.info(f"Replacements made successfully in DOCX file and saved as: {newWordDoc}")
             print(f"INFO: Replacements made successfully in DOCX file and saved as: {newWordDoc}")
@@ -413,9 +413,7 @@ def chooseDocx_vEdge(rowText):
             serialNumSDW03New = PID_SDW03 + serialNumSDW03
             serialNumSDW04New = PID_SDW04 + serialNumSDW04
 
-            snmpLocation = f'{rowText[3]}'
-            cedge1_host = f'{rowText[2]}'
-            cedge2_host = f'{rowText[47]}'
+            sw_host = f'{rowText[13]}'
 
             replaceText = {
                 'cedge1-host' : f'{rowText[2]}',
@@ -457,7 +455,6 @@ def chooseDocx_vEdge(rowText):
                 'state': state,
                 'site-code': siteCode,
                 'sw-mgmt-ip' : shVlanMgmtIP,
-                'sw-host' : f'{rowText[13]}',
                 'sw-cEdge1-mpls-port': swcEdge1_mplsPort,
                 'sw-cEdge2-mpls-port': swcEdge2_mplsPort,
                 'mpls-circuitid':  mplsCircuitID,
@@ -478,6 +475,7 @@ def chooseDocx_vEdge(rowText):
                 'sw-mpls-port': shIntStatMPLSOut1[0],
                 'sw-remote-con-net1': shIntDesCONOut1[0],
                 'sw-remote-con-net2': shIntDesCONOut1[1],
+                'sw-host' : sw_host,
                 'sw-mgmt-vlan' : '1500'
             }
 
@@ -518,7 +516,7 @@ def chooseDocx_vEdge(rowText):
                                         authLog.info(f"Replacing in Table: '{placeholder.pattern}' with '{replacement}'")
                                         paragraph.text = placeholder.sub(replacement, paragraph.text)
 
-            newWordDoc = f"{siteCode}_ImplementationPlan.docx"
+            newWordDoc = f"Outputs/{siteCode}_ImplementationPlan.docx"
             wordDOC.save(newWordDoc)
             authLog.info(f"Replacements made successfully in DOCX file and saved as: {newWordDoc}")
             print(f"INFO: Replacements made successfully in DOCX file and saved as: {newWordDoc}")
@@ -526,7 +524,7 @@ def chooseDocx_vEdge(rowText):
             returnList.append(rowText)
 
             for index, item in enumerate(rowText):
-                print(f"returnList[{index}] with string: {item}")
+                print(f"rowText[{index}] with string: {item}")
 
             print("\n")
 
@@ -535,155 +533,47 @@ def chooseDocx_vEdge(rowText):
             
             os.system("PAUSE")
 
-            return [
-                returnList,
-                serialNumSDW01,
-                serialNumSDW02,
-                serialNumSDW03,
-                serialNumSDW04,
-                cEdge1Loop,
-                cEdge2Loop,
-                siteNo,
-                city,
-                state,
-                siteCode,
-                mplsCircuitID,
-                bb1Carrier,
-                bb1Circuitid,
-                cEdge2TLOC3_Port,
-                swcEdge1_vlan,
-                swcEdge2_vlan,
-                swcEdge1_port,
-                swcEdge2_port,
-                swcEdge1_mplsPort,
-                swcEdge2_mplsPort
+            manualReplaceList = [
+                serialNumSDW01,     #0
+                serialNumSDW02,     #1
+                serialNumSDW03New,  #2
+                serialNumSDW04New,  #3
+                cEdge1Loop,         #4
+                cEdge2Loop,         #5
+                siteNo,             #6
+                city,               #7
+                state,              #8
+                siteCode,           #9
+                shVlanMgmtIP,       #10            
+                swcEdge1_mplsPort,  #11
+                swcEdge2_mplsPort,  #12
+                mplsCircuitID,      #13
+                bb1Carrier,         #14
+                bb1Circuitid,       #15
+                cEdge2TLOC3_Port,   #16
+                cedge2TLOC3_IP_STR, #17
+                cedge2TLOC3_MASK_STR,#18
+                cedge2TLOC3_CIDR_STR,#19
+                netVlan1101,        #20
+                netVlan1103,        #21
+                shLoop0Out,         #22
+                shVlanMgmtCIDR,     #23
+                swcEdge1_port,      #24
+                swcEdge1_vlan,      #25
+                swcEdge2_port,      #26
+                swcEdge2_vlan,      #27
+                shIntStatMPLSOut1[0],#28
+                shIntDesCONOut1[0], #29
+                shIntDesCONOut1[1], #30
+                sw_host,            #31
+                '1500'              #32
             ]
 
-            # return {
-            #     'cedge1-host' : f'{rowText[2]}',
-            #     'snmp-location' : f'{rowText[3]}',
-            #     'cedge1-rtr-ip' : f'{rowText[6]}',
-            #     'cEdge-asn' : f'{rowText[9]}',
-            #     'cedge1-sw-ip' : f'{rowText[12]}',
-            #     'switch-asn' : f'{rowText[14]}',
-            #     'mpls-pe-ip' : f'{rowText[17]}',
-            #     'cedge2-tloc3-ext-ip' : f'{rowText[18]}',
-            #     'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[20]}',
-            #     'cedge1-tloc3-ip'	: f'{rowText[21]}',
-            #     'mpls-ce1-ip' : f'{rowText[32]}',
-            #     'mpls-speed' : f'{rowText[38]}',
-            #     'latitude' : f'{rowText[41]}',
-            #     'longitude' : f'{rowText[42]}',
-            #     # Here starts the second CSV file #
-            #     'cedge2-host'	: f'{rowText[47]}',
-            #     'bb1-down-speed' : f'{rowText[82]}',
-            #     'cedge2-rtr-ip' : f'{rowText[51]}',
-            #     'cedge2-sw-ip' : f'{rowText[57]}',	
-            #     'cedge2-tloc3-gate' : f'{rowText[63]}',	
-            #     'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
-            #     'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
-            #     'bb1-up-speed' : f'{rowText[82]}',	
-            #     'mpls-ce2-ip'	: f'{rowText[85]}',
+            return {
+                'rowText' : returnList,
+                'rowText1' :  manualReplaceList
+            }
 
-            #     'cedge1-serial-no' : serialNumSDW03New,
-            #     'cedge2-serial-no' : serialNumSDW04New,
-            #     'cedge1-loop' : cEdge1Loop,
-            #     'cedge2-loop' : cEdge2Loop,
-            #     'site-no'	: siteNo,
-            #     'city': city,
-            #     'state': state,
-            #     'site-code': siteCode,
-            #     'sw-mgmt-ip' : shVlanMgmtIP,
-            #     'sw-host' : f'{rowText[13]}',
-            #     'sw-cEdge1-mpls-port': swcEdge1_mplsPort,
-            #     'sw-cEdge2-mpls-port': swcEdge2_mplsPort,
-            #     'mpls-circuitid':  mplsCircuitID,
-            #     'bb1-carrier': bb1Carrier,
-            #     'bb1-circuitid': bb1Circuitid,
-            #     'cedge2-tloc3-port': cEdge2TLOC3_Port,
-            #     'cedge2-tloc3-ip': cedge2TLOC3_IP_STR,
-            #     'cedge2-tloc3-mask' : cedge2TLOC3_MASK_STR,
-            #     'cedge2-tloc3-cidr': cedge2TLOC3_CIDR_STR,
-            #     'cedge1-lan-net': netVlan1101,
-            #     'cedge2-lan-net': netVlan1103,
-            #     'sw-loop': shLoop0Out,
-            #     'sw-mgmt-cidr': shVlanMgmtCIDR,
-            #     'sw-cedge1-port': swcEdge1_port,
-            #     'sw-cedge1-vlan': swcEdge1_vlan,
-            #     'sw-cedge2-port': swcEdge2_port,
-            #     'sw-cedge2-vlan': swcEdge2_vlan,
-            #     'sw-mpls-port': shIntStatMPLSOut1[0],
-            #     'sw-remote-con-net1': shIntDesCONOut1[0],
-            #     'sw-remote-con-net2': shIntDesCONOut1[1],
-            #     'sw-mgmt-vlan' : '1500'
-
-
-                # 'site-code': siteCode,
-                # 'serialNumSDW01': serialNumSDW01,
-                # 'serialNumSDW02': serialNumSDW02,
-                # 'serialNumSDW03': serialNumSDW03,
-                # 'serialNumSDW04': serialNumSDW04,
-                # 'cedge1-loop': cEdge1Loop,
-                # 'cedge2-loop': cEdge2Loop,
-                # 'snmp-location': snmpLocation,
-                # 'city': city,
-                # 'state': state,
-                # 'site-no': siteNo,
-                # 'cedge1-host': cedge1_host,
-                # 'cedge2-host': cedge2_host,
-                # 'sw-host' : f'{rowText[12]}',
-                # 'sw-mpls-port' : shIntStatMPLSOut1[0],
-                # 'cedge2-tloc3-port': cEdge2TLOC3_Port,
-                # 'sw-cedge1-port' : swcEdge1_port,
-                # 'sw-cedge2-port' : swcEdge2_port,
-                # 'sw-cedge1-mpls-port' : swcEdge1_mplsPort,
-                # 'sw-cedge2-mpls-port' : swcEdge2_mplsPort,
-                # 'vedge1-loop' : f'{rowText[10]}',
-                # 'vedge2-loop' : f'{rowText[55]}',
-
-                # 'cedge1-rtr-ip' : f'{rowText[6]}',
-                # 'cEdge-asn' : f'{rowText[8]}',
-                # 'cedge1-sw-ip' : f'{rowText[11]}',
-                # 'switch-asn' : f'{rowText[13]}',
-                # 'mpls-pe-ip' : f'{rowText[14]}',
-                # 'cedge2-tloc3-ext-ip' : f'{rowText[15]}',
-                # 'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[17]}',
-                # 'cedge1-tloc3-ip'	: f'{rowText[18]}',
-                # 'mpls-ce1-ip' : f'{rowText[29]}',
-                # 'mpls-speed' : f'{rowText[35]}',
-                # 'latitude' : f'{rowText[38]}',
-                # 'longitude' : f'{rowText[39]}',
-                # # Here starts the second CSV file #
-                # 'bb1-down-speed' : f'{rowText[76]}',
-                # 'cedge2-rtr-ip' : f'{rowText[51]}',
-                # 'cedge2-sw-ip' : f'{rowText[57]}',	
-                # 'cedge2-tloc3-gate' : f'{rowText[63]}',	
-                # 'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
-                # 'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
-                # 'bb1-up-speed' : f'{rowText[82]}',	
-                # 'mpls-ce2-ip'	: f'{rowText[85]}',
-
-                # 'cedge1-serial-no' : serialNumSDW03New,
-                # 'cedge2-serial-no' : serialNumSDW04New,
-                # 'sw-mgmt-ip' : shVlanMgmtIP,
-                # 'mpls-circuitid':  mplsCircuitID,
-                # 'bb1-carrier': bb1Carrier,
-                # 'bb1-circuitid': bb1Circuitid,
-                # 'cedge2-tloc3-port': cEdge2TLOC3_Port,
-                # 'cedge2-tloc3-ip': cedge2TLOC3_IP_STR,
-                # 'cedge2-tloc3-mask' : cedge2TLOC3_MASK_STR,
-                # 'cedge2-tloc3-cidr': cedge2TLOC3_CIDR_STR,
-                # 'cedge1-lan-net': netVlan1101,
-                # 'cedge2-lan-net': netVlan1103,
-                # 'sw-loop': shLoop0Out,
-                # 'sw-mgmt-cidr': shVlanMgmtCIDR,
-                # 'sw-cedge1-vlan': swcEdge1_vlan,
-                # 'sw-cedge2-vlan': swcEdge2_vlan,
-                # 'sw-mpls-port': shIntStatMPLSOut1[0],
-                # 'sw-remote-con-net1': shIntDesCONOut1[0],
-                # 'sw-remote-con-net2': shIntDesCONOut1[1],
-                # 'sw-mgmt-vlan' : '1500'
-            # }
         
         except FileNotFoundError:
             print("File not found. Please check the file path and try again.")
@@ -722,7 +612,7 @@ def modNDLM(siteCode, serialNumSDW01, serialNumSDW02, serialNumSDW03, serialNumS
                             cellValue = cellValue.replace(key, value)
                     cell.value = cellValue
 
-            newNDLMFile = f'{siteCode}-NDLM.xlsx'
+            newNDLMFile = f'Outputs/{siteCode}-NDLM.xlsx'
             ndlmFile.save(newNDLMFile)
 
     except FileNotFoundError:
@@ -771,7 +661,7 @@ def modNDLM2(siteCode, cEdge1Loop, cEdge2Loop, snmpLocation, city, state, siteNo
                             cellValue = cellValue.replace(key, value)
                     cell.value = cellValue
 
-            newNDLMFile = f'{siteCode}-NDLM-Tier2.xlsx'
+            newNDLMFile = f'Outputs/{siteCode}-NDLM-Tier2.xlsx'
             ndlmFile.save(newNDLMFile)
 
     except FileNotFoundError:
@@ -783,10 +673,10 @@ def modNDLM2(siteCode, cEdge1Loop, cEdge2Loop, snmpLocation, city, state, siteNo
         print(f"ERROR: {error}\n", traceback.format_exc())
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
-def cEdgeTemplate(rowText):
-    site_code = "test"
-    newSDW03Template = f'{site_code}-SDW-03-Template.csv'
-    newSDW04Template = f'{site_code}-SDW-04-Template.csv'
+def cEdgeTemplate(rowText, rowText1):
+    
+    newSDW03Template = f'Outputs/{rowText1[9]}-SDW-03-Template.csv'
+    newSDW04Template = f'Outputs/{rowText1[9]}-SDW-04-Template.csv'
 
     sdw03Replacements = {
         'cedge1-host' : f'{rowText[2]}',
@@ -813,77 +703,104 @@ def cEdgeTemplate(rowText):
         'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
         'bb1-up-speed' : f'{rowText[82]}',	
         'mpls-ce2-ip'	: f'{rowText[85]}',
-        'sw-host' : f'{rowText[13]}'
+
+        'cedge1-serial-no' : rowText1[2],
+        'cedge2-serial-no' : rowText1[3],
+        'cedge1-loop' : rowText1[4],
+        'cedge2-loop' : rowText1[5],
+        'site-no'	: rowText1[6],
+        'city': rowText1[7],
+        'state': rowText1[8],
+        'site-code': rowText1[9],
+        'sw-mgmt-ip' : rowText1[10],
+        'sw-cEdge1-mpls-port': rowText[11],
+        'sw-cEdge2-mpls-port': rowText1[12],
+        'mpls-circuitid':  rowText1[13],
+        'bb1-carrier': rowText1[14],
+        'bb1-circuitid': rowText1[15],
+        'cedge2-tloc3-port': rowText1[16],
+        'cedge2-tloc3-ip': rowText1[17],
+        'cedge2-tloc3-mask' : rowText1[18],
+        'cedge2-tloc3-cidr': rowText1[19],
+        'cedge1-lan-net': rowText1[20],
+        'cedge2-lan-net': rowText1[21],
+        'sw-loop': rowText1[22],
+        'sw-mgmt-cidr': rowText1[23],
+        'sw-cedge1-port': rowText1[24],
+        'sw-cedge1-vlan': rowText1[25],
+        'sw-cedge2-port': rowText1[26],
+        'sw-cedge2-vlan': rowText1[27],
+        'sw-mpls-port': rowText1[28],
+        'sw-remote-con-net1': rowText1[29],
+        'sw-remote-con-net2': rowText1[30],
+        'sw-host' : rowText1[31],
+        'sw-mgmt-vlan' : rowText1[32] 
     }
 
     sdw04Replacements = {
-
-
+        'cedge1-host' : f'{rowText[2]}',
+        'snmp-location' : f'{rowText[3]}',
+        'cedge1-rtr-ip' : f'{rowText[6]}',
+        'cEdge-asn' : f'{rowText[9]}',
+        'cedge1-sw-ip' : f'{rowText[12]}',
+        'switch-asn' : f'{rowText[14]}',
+        'mpls-pe-ip' : f'{rowText[17]}',
+        'cedge2-tloc3-ext-ip' : f'{rowText[18]}',
+        'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[20]}',
+        'cedge1-tloc3-ip'	: f'{rowText[21]}',
+        'mpls-ce1-ip' : f'{rowText[32]}',
+        'mpls-speed' : f'{rowText[38]}',
+        'latitude' : f'{rowText[41]}',
+        'longitude' : f'{rowText[42]}',
+        # Here starts the second CSV file #
+        'cedge2-host'	: f'{rowText[47]}',
+        'bb1-down-speed' : f'{rowText[82]}',
+        'cedge2-rtr-ip' : f'{rowText[51]}',
+        'cedge2-sw-ip' : f'{rowText[57]}',	
+        'cedge2-tloc3-gate' : f'{rowText[63]}',	
+        'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
+        'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
+        'bb1-up-speed' : f'{rowText[82]}',	
+        'mpls-ce2-ip'	: f'{rowText[85]}',
+        
+        'cedge1-serial-no' : rowText1[2],
+        'cedge2-serial-no' : rowText1[3],
+        'cedge1-loop' : rowText1[4],
+        'cedge2-loop' : rowText1[5],
+        'site-no'	: rowText1[6],
+        'city': rowText1[7],
+        'state': rowText1[8],
+        'site-code': rowText1[9],
+        'sw-mgmt-ip' : rowText1[10],
+        'sw-cEdge1-mpls-port': rowText[11],
+        'sw-cEdge2-mpls-port': rowText1[12],
+        'mpls-circuitid':  rowText1[13],
+        'bb1-carrier': rowText1[14],
+        'bb1-circuitid': rowText1[15],
+        'cedge2-tloc3-port': rowText1[16],
+        'cedge2-tloc3-ip': rowText1[17],
+        'cedge2-tloc3-mask' : rowText1[18],
+        'cedge2-tloc3-cidr': rowText1[19],
+        'cedge1-lan-net': rowText1[20],
+        'cedge2-lan-net': rowText1[21],
+        'sw-loop': rowText1[22],
+        'sw-mgmt-cidr': rowText1[23],
+        'sw-cedge1-port': rowText1[24],
+        'sw-cedge1-vlan': rowText1[25],
+        'sw-cedge2-port': rowText1[26],
+        'sw-cedge2-vlan': rowText1[27],
+        'sw-mpls-port': rowText1[28],
+        'sw-remote-con-net1': rowText1[29],
+        'sw-remote-con-net2': rowText1[30],
+        'sw-host' : rowText1[31],
+        'sw-mgmt-vlan' : rowText1[32] 
     }
-
-
-    # sdw03Replacements = {
-    #     'cedge1-serial-no': cedge1_serial_no,
-    #     'cedge1-loop': cedge1_loop,
-    #     'cedge1-host': cedge1_host,
-    #     'snmp-location': snmp_location,
-    #     'sw-host': sw_host,
-    #     'sw-cedge1-port': sw_cedge1_port,
-    #     'cedge1-rtr-ip': cedge1_rtr_ip,
-    #     'cEdge-asn': cEdge_asn,
-    #     'cedge1-sw-ip': cedge1_sw_ip,
-    #     'switch-asn': switch_asn,
-    #     'sw-mgmt-ip': sw_mgmt_ip,
-    #     'mpls-pe-ip': mpls_pe_ip,
-    #     'cedge2-tloc3-ext-ip': cedge2_tloc3_ext_ip,
-    #     'cedge2-host': cedge2_host,
-    #     'cedge1-tloc3-ip': cedge1_tloc3_ip,
-    #     'sw-cedge1-mpls-port': sw_cedge1_mpls_port,
-    #     'mpls-circuitid': mpls_circuitid,
-    #     'mpls-ce1-ip': mpls_ce1_ip,
-    #     'mpls-speed': mpls_speed,
-    #     'latitude': latitude,
-    #     'longitude': longitude,
-    #     'site-no': site_no
-    #     }
-    
-    # sdw04Replacements = {
-    #     'cedge2-serial-no': cedge2_serial_no,
-    #     'cedge2-loop': cedge2_loop, 
-    #     'cedge2-host': cedge2_host,
-    #     'cedge2-tloc3-port': cedge2_tloc3_port,
-    #     'bb1-down-speed': bb1_down_speed,
-    #     'snmp-location': snmp_location,
-    #     'sw-host': sw_host,
-    #     'sw-cedge2-port': sw_cedge2_port,
-    #     'cedge2-rtr-ip': cedge2_rtr_ip,
-    #     'cEdge-asn': cEdge_asn,
-    #     'cedge2-sw-ip': cedge2_sw_ip,
-    #     'switch-asn': switch_asn,
-    #     'sw-mgmt-ip': sw_mgmt_ip,
-    #     'cedge2-tloc3-gate': cedge2_tloc3_gate,
-    #     'mpls-pe-ip': mpls_pe_ip,
-    #     'cedge1-host': cedge1_host,
-    #     'cedge2-tloc3-ext-ip': cedge2_tloc3_ext_ip,
-    #     'bb1-carrier': bb1_carrier,
-    #     'bb1-circuitid': bb1_circuitid,
-    #     'cedge2-tloc3-ip': cedge2_tloc3_ip,
-    #     'cedge2-tloc3-cidr': cedge2_tloc3_cidr,
-    #     'bb1-up-speed': bb1_up_speed,
-    #     'sw-cedge2-mpls-port': sw_cedge2_mpls_port, 
-    #     'mpls-circuitid': mpls_circuitid,
-    #     'mpls-ce2-ip': mpls_ce2_ip,
-    #     'mpls-speed': mpls_speed,
-    #     'latitude': latitude,
-    #     'longitude': longitude,
-    #     'site-no': site_no
-    # }
 
     try:
         with open(sdw03Template, "r") as inputCSV, \
             open(newSDW03Template, 'w') as outputCSV:
-            authLog.info(f"Generating {site_code}-SDW-03-Template")
-            print(f"INFO: Generating {site_code}-SDW-03-Template.")
+            authLog.info(f"Generating {rowText1[9]}-SDW-03-Template")
+            print(f"INFO: Generating {rowText1[9]}-SDW-03-Template.")
             csvReader = csv.reader(inputCSV)
             csvWriter = csv.writer(outputCSV)   
 
@@ -899,8 +816,8 @@ def cEdgeTemplate(rowText):
         
         with open(sdw04Template, "r") as inputCSV1, \
             open(newSDW04Template, 'w') as outputCSV1:
-            authLog.info(f"Generating {site_code}-SDW-04-Template")
-            print(f"INFO: Generating {site_code}-SDW-04-Template.")
+            authLog.info(f"Generating {rowText1[9]}-SDW-04-Template")
+            print(f"INFO: Generating {rowText1[9]}-SDW-04-Template.")
             csvReader1 = csv.reader(inputCSV1)
             csvWriter1 = csv.writer(outputCSV1)   
 
