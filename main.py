@@ -15,8 +15,10 @@ def main():
         selection = input("Please choose the option that yyou want: ")
         if checkIsDigit(selection):
             if selection == "1":
-                rowText = chooseCSV()
-                docxValues, docxValues1 = chooseDocx_vEdge(rowText)
+                csvValues = chooseCSV()
+                docxValues = chooseDocx_vEdge(csvValues)
+                rowText = docxValues['rowText']
+                rowText1 = docxValues['rowText1']
                 # modNDLM(docxValues) , docxValues['serialNumSDW01'], docxValues['serialNumSDW02'], 
                 #         docxValues['serialNumSDW03'], docxValues['serialNumSDW04'], docxValues['cedge1-loop'], 
                 #         docxValues['cedge2-loop'], docxValues['snmp-location'], docxValues['vedge1-loop'], docxValues['vedge2-loop'])
@@ -25,11 +27,11 @@ def main():
                 #         docxValues['cedge1-host'], docxValues['cedge2-host'], docxValues['sw-host'], 
                 #         docxValues['sw-mpls-port'], docxValues['cedge2-tloc3-port'], docxValues['sw-cedge1-port'], 
                 #         docxValues['sw-cedge2-port'], docxValues['sw-cedge1-mpls-port'], docxValues['sw-cedge2-mpls-port'])
-                cEdgeTemplate(docxValues, docxValues1)
+                cEdgeTemplate(rowText, rowText1)
 
             if selection == "2":
-                rowText = chooseCSV()
-                docxValues = chooseDocx_ISR(rowText)
+                csvValues = chooseCSV()
+                docxValues = chooseDocx_ISR(csvValues)
                 modNDLM(docxValues['site-code'], docxValues['serialNumSDW01'], docxValues['serialNumSDW02'], 
                         docxValues['serialNumSDW03'], docxValues['serialNumSDW04'], docxValues['cedge1-loop'], 
                         docxValues['cedge2-loop'], docxValues['snmp-location'], docxValues['vedge1-loop'], docxValues['vedge2-loop'])
