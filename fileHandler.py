@@ -14,6 +14,7 @@ import ipaddress
 import openpyxl
 
 removeCIDR_Patt = r'/\d{2}'
+filterSiteCode = r'-sdw-0[1-9]}'
 
 PID_SDW03 = 'C8300-1N1S-4T2X-'
 PID_SDW04 = 'C8300-1N1S-4T2X-'
@@ -66,7 +67,6 @@ def chooseCSV():
     return mergedData
 
 def chooseDocx_ISR(rowText):
-    print(f"This is rowText[12]: {rowText[12]}")
     swHostname, username, netDevice = Auth(rowText[12])
     shHostnameOut, netVlan1101, netVlan1103, shIntDesSDWOut, shIntDesCONOut1, shIntStatMPLSOut1, shVlanMgmtIP, shVlanMgmtCIDR, shLoop0Out = shCoreInfo(swHostname, username, netDevice)
 
@@ -93,7 +93,6 @@ def chooseDocx_ISR(rowText):
             siteNo = input(f"Please input the new Site ID (Old Site ID: {rowText[41]}):")
             city = input("Please input the City: ")
             state = input("Please input the State: ")
-            siteCode = input(f"Please input the Site Code: ")
             mplsCircuitID = input("Please input the MPLS Circuit ID:")
             bb1Carrier = input("Please input the bb1-carrier: ")
             bb1Circuitid = input("Please input the bb1-circuitid: ")
@@ -150,6 +149,12 @@ def chooseDocx_ISR(rowText):
             cedge1_host = f'{rowText[2]}'
             cedge2_host = f'{rowText[44]}'
 
+            siteCode = f'{rowText[2]}'
+            siteCode = re.sub(filterSiteCode, '', siteCode)
+            print(f"This is the side code:{siteCode}")
+            os.system("PAUSE")
+            sw_host = f'{rowText[12]}'
+
             replaceText = {
                 'cedge1-host' : f'{rowText[2]}',
                 'snmp-location' : f'{rowText[3]}',
@@ -190,7 +195,7 @@ def chooseDocx_ISR(rowText):
                 'state': state,
                 'site-code': siteCode,
                 'sw-mgmt-ip' : shVlanMgmtIP,
-                'sw-host' : f'{rowText[12]}',
+                'sw-host' : sw_host,
                 'sw-cEdge1-mpls-port': swcEdge1_mplsPort,
                 'sw-cEdge2-mpls-port': swcEdge2_mplsPort,
                 'mpls-circuitid':  mplsCircuitID,
@@ -256,72 +261,45 @@ def chooseDocx_ISR(rowText):
             authLog.info(f"Replacements made successfully in DOCX file and saved as: {newWordDoc}")
             print(f"INFO: Replacements made successfully in DOCX file and saved as: {newWordDoc}")
 
+            manualReplaceList = [
+                serialNumSDW01,     #0
+                serialNumSDW02,     #1
+                serialNumSDW03New,  #2
+                serialNumSDW04New,  #3
+                cEdge1Loop,         #4
+                cEdge2Loop,         #5
+                siteNo,             #6
+                city,               #7
+                state,              #8
+                siteCode,           #9
+                shVlanMgmtIP,       #10            
+                swcEdge1_mplsPort,  #11
+                swcEdge2_mplsPort,  #12
+                mplsCircuitID,      #13
+                bb1Carrier,         #14
+                bb1Circuitid,       #15
+                cEdge2TLOC3_Port,   #16
+                cedge2TLOC3_IP_STR, #17
+                cedge2TLOC3_MASK_STR,#18
+                cedge2TLOC3_CIDR_STR,#19
+                netVlan1101,        #20
+                netVlan1103,        #21
+                shLoop0Out,         #22
+                shVlanMgmtCIDR,     #23
+                swcEdge1_port,      #24
+                swcEdge1_vlan,      #25
+                swcEdge2_port,      #26
+                swcEdge2_vlan,      #27
+                shIntStatMPLSOut1[0],#28
+                shIntDesCONOut1[0], #29
+                shIntDesCONOut1[1], #30
+                sw_host,            #31
+                '1500'              #32
+            ]
+
             return {
-                'site-code': siteCode,
-                'serialNumSDW01': serialNumSDW01,
-                'serialNumSDW02': serialNumSDW02,
-                'serialNumSDW03': serialNumSDW03,
-                'serialNumSDW04': serialNumSDW04,
-                'cedge1-loop': cEdge1Loop,
-                'cedge2-loop': cEdge2Loop,
-                'snmp-location': snmpLocation,
-                'city': city,
-                'state': state,
-                'site-no': siteNo,
-                'cedge1-host': cedge1_host,
-                'cedge2-host': cedge2_host,
-                'sw-host' : f'{rowText[12]}',
-                'sw-mpls-port' : shIntStatMPLSOut1[0],
-                'cedge2-tloc3-port': cEdge2TLOC3_Port,
-                'sw-cedge1-port' : swcEdge1_port,
-                'sw-cedge2-port' : swcEdge2_port,
-                'sw-cedge1-mpls-port' : swcEdge1_mplsPort,
-                'sw-cedge2-mpls-port' : swcEdge2_mplsPort,
-                'vedge1-loop' : f'{rowText[9]}',
-                'vedge2-loop' : f'{rowText[51]}',
-
-                'cedge1-rtr-ip' : f'{rowText[6]}',
-                'cEdge-asn' : f'{rowText[8]}',
-                'cedge1-sw-ip' : f'{rowText[11]}',
-                'switch-asn' : f'{rowText[13]}',
-                'mpls-pe-ip' : f'{rowText[14]}',
-                'cedge2-tloc3-ext-ip' : f'{rowText[15]}',
-                'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[17]}',
-                'cedge1-tloc3-ip'	: f'{rowText[18]}',
-                'mpls-ce1-ip' : f'{rowText[29]}',
-                'mpls-speed' : f'{rowText[35]}',
-                'latitude' : f'{rowText[38]}',
-                'longitude' : f'{rowText[39]}',
-                # Here starts the second CSV file #
-                'bb1-down-speed' : f'{rowText[76]}',
-                'cedge2-rtr-ip' : f'{rowText[48]}',
-                'cedge2-sw-ip' : f'{rowText[53]}',	
-                'cedge2-tloc3-gate' : f'{rowText[57]}',	
-                'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
-                'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
-                'bb1-up-speed' : f'{rowText[75]}',	
-                'mpls-ce2-ip'	: f'{rowText[79]}',
-
-                'cedge1-serial-no' : serialNumSDW03New,
-                'cedge2-serial-no' : serialNumSDW04New,
-                'sw-mgmt-ip' : shVlanMgmtIP,
-                'mpls-circuitid':  mplsCircuitID,
-                'bb1-carrier': bb1Carrier,
-                'bb1-circuitid': bb1Circuitid,
-                'cedge2-tloc3-port': cEdge2TLOC3_Port,
-                'cedge2-tloc3-ip': cedge2TLOC3_IP_STR,
-                'cedge2-tloc3-mask' : cedge2TLOC3_MASK_STR,
-                'cedge2-tloc3-cidr': cedge2TLOC3_CIDR_STR,
-                'cedge1-lan-net': netVlan1101,
-                'cedge2-lan-net': netVlan1103,
-                'sw-loop': shLoop0Out,
-                'sw-mgmt-cidr': shVlanMgmtCIDR,
-                'sw-cedge1-vlan': swcEdge1_vlan,
-                'sw-cedge2-vlan': swcEdge2_vlan,
-                'sw-mpls-port': shIntStatMPLSOut1[0],
-                'sw-remote-con-net1': shIntDesCONOut1[0],
-                'sw-remote-con-net2': shIntDesCONOut1[1],
-                'sw-mgmt-vlan' : '1500'
+                'rowText' : rowText,
+                'rowText1' :  manualReplaceList
             }
 
         except FileNotFoundError:
@@ -333,6 +311,215 @@ def chooseDocx_ISR(rowText):
         except Exception as error:
             print(f"ERROR: {error}\n", traceback.format_exc())
             authLog.error(f"Wasn't possible to choose the DOCX file, error message: {error}\n{traceback.format_exc()}")
+
+def modNDLMISR(rowText, rowText1):
+    try:
+        replaceText = {
+            'site-code' : f'{rowText1[9]}',
+            'vedge1-serial-no' : f'{rowText1[0]}',
+            'vedge2-serial-no' : f'{rowText1[1]}',
+            'cedge1-serial-no' : f'{rowText1[2]}',
+            'cedge2-serial-no' : f'{rowText1[3]}',
+            'cedge1-loop' : f'{rowText1[4]}',
+            'cedge2-loop' : f'{rowText1[5]}',
+            'snmp-location' : f'{rowText[3]}',
+            'vedge1-loop': f'{rowText[1]}',
+            'vedge2-loop': f'{rowText[43]}'
+        }
+
+        ndlmFile = openpyxl.load_workbook(ndlmPath1)
+        ndlmFileSheet = ndlmFile.active
+
+        for row in ndlmFileSheet.iter_rows():
+            for cell in row:
+                if cell.value:
+                    cellValue = str(cell.value).strip()
+                    for key, value in replaceText.items():
+                        if key.lower() in cellValue.lower():
+                            cellValue = cellValue.replace(key, value)
+                    cell.value = cellValue
+
+            newNDLMFile = os.path.join(outputFolder, f'{rowText1[9]}-NDLM.xlsx')
+            ndlmFile.save(newNDLMFile)
+
+    except FileNotFoundError:
+        print("File not found. Please check the file path and try again.")
+        authLog.error(f"File not found in path {ndlmPath1}")
+        authLog.error(traceback.format_exc())
+
+    except Exception as error:
+        print(f"ERROR: {error}\n", traceback.format_exc())
+        authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
+
+def modNDLM2ISR(rowText, rowText1):
+    try:
+
+        replaceText = {
+            'site-code' : f'{rowText1[9]}',
+            'cedge1-loop' : f'{rowText1[4]}',
+            'cedge2-loop' : f'{rowText1[5]}',
+            'snmp-location' : f'{rowText[3]}',
+            'city': f'{rowText1[7]}',
+            'state': f'{rowText1[8]}',
+            'site-no': f'{rowText1[6]}',
+            'cedge1-host': f'{rowText[2]}',
+            'cedge2-host': f'{rowText[44]}',
+            'sw-host' : f'{rowText1[31]}',
+            'sw-mpls-port' : f'{rowText1[28]}',
+            'cedge2-tloc3-port': f'{rowText1[16]}',
+            'sw-cedge1-port' : f'{rowText1[24]}',
+            'sw-cedge2-port' : f'{rowText1[26]}',
+            'sw-cedge1-mpls-port' : f'{rowText1[11]}',
+            'sw-cedge2-mpls-port' : f'{rowText1[12]}'
+        }
+
+        ndlmFile1 = openpyxl.load_workbook(ndlmPath2)
+        ndlmFileSheet1 = ndlmFile1.active
+
+        for row in ndlmFileSheet1.iter_rows():
+            for cell in row:
+                if cell.value:
+                    cellValue = str(cell.value).strip()
+                    for key, value in replaceText.items():
+                        if key.lower() in cellValue.lower():
+                            cellValue = cellValue.replace(key, value)
+                    cell.value = cellValue
+
+            newNDLMFile1 = os.path.join(outputFolder, f'{rowText1[9]}-NDLM-Tier2.xlsx')
+            ndlmFile1.save(newNDLMFile1)
+
+    except FileNotFoundError:
+        print("File not found. Please check the file path and try again.")
+        authLog.error(f"File not found in path {ndlmPath2}")
+        authLog.error(traceback.format_exc())
+
+    except Exception as error:
+        print(f"ERROR: {error}\n", traceback.format_exc())
+        authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
+
+def cEdgeTemplateISR(rowText, rowText1):
+
+    for index, item in enumerate(rowText):
+        print(f"rowText[{index}] with string: {item}")
+    
+    for index, item in enumerate(rowText1):
+        print(f"rowText1[{index}] with string: {item}")
+    os.system("PAUSE")
+    
+    newSDW03Template = f'Outputs/{rowText1[9]}-SDW-03-Template.csv'
+    newSDW04Template = f'Outputs/{rowText1[9]}-SDW-04-Template.csv'
+
+    sdw03Replacements = {
+        'cedge1-host' : f'{rowText[2]}',
+        'snmp-location' : f'{rowText[3]}',
+        'cedge1-rtr-ip' : f'{rowText[6]}',
+        'cEdge-asn' : f'{rowText[8]}',
+        'cedge1-sw-ip' : f'{rowText[11]}',
+        'switch-asn' : f'{rowText[13]}',
+        'mpls-pe-ip' : f'{rowText[14]}',
+        'cedge2-tloc3-ext-ip' : f'{rowText[15]}',
+        'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[17]}',
+        'cedge1-tloc3-ip'	: f'{rowText[18]}',
+        'mpls-ce1-ip' : f'{rowText[29]}',
+        'mpls-speed' : f'{rowText[35]}',
+        'latitude' : f'{rowText[38]}',
+        'longitude' : f'{rowText[39]}',
+        # Here starts the second CSV file #
+        'cedge2-host'	: f'{rowText[44]}',
+        'bb1-down-speed' : f'{rowText[76]}',
+        'cedge2-rtr-ip' : f'{rowText[48]}',
+        'cedge2-sw-ip' : f'{rowText[53]}',	
+        'cedge2-tloc3-gate' : f'{rowText[57]}',	
+        'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
+        'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
+        'bb1-up-speed' : f'{rowText[75]}',	
+        'mpls-ce2-ip'	: f'{rowText[79]}',
+
+        'cedge1-serial-no' : f'{rowText1[2]}',
+        'cedge2-serial-no' : f'{rowText1[3]}',
+        'cedge1-loop' : f'{rowText1[4]}',
+        'cedge2-loop' : f'{rowText1[5]}',
+        'site-no'	: f'{rowText1[6]}',
+        'city': f'{rowText1[7]}',
+        'state': f'{rowText1[8]}',
+        'site-code': f'{rowText1[9]}',
+        'sw-mgmt-ip' : f'{rowText1[10]}',
+        'sw-host' : f'{rowText[31]}',
+        'sw-cEdge1-mpls-port': f'{rowText1[11]}',
+        'sw-cEdge2-mpls-port': f'{rowText1[12]}',
+        'mpls-circuitid':  f'{rowText1[13]}',
+        'bb1-carrier': f'{rowText1[14]}',
+        'bb1-circuitid': f'{rowText1[15]}',
+        'cedge2-tloc3-port': f'{rowText1[16]}',
+        'cedge2-tloc3-ip': f'{rowText1[17]}',
+        'cedge2-tloc3-mask' : f'{rowText1[18]}',
+        'cedge2-tloc3-cidr': f'{rowText1[19]}',
+        'cedge1-lan-net': f'{rowText1[20]}',
+        'cedge2-lan-net': f'{rowText1[21]}',
+        'sw-loop': f'{rowText1[22]}',
+        'sw-mgmt-cidr': f'{rowText1[23]}',
+        'sw-cedge1-port': f'{rowText1[24]}',
+        'sw-cedge1-vlan': f'{rowText1[25]}',
+        'sw-cedge2-port': f'{rowText1[26]}',
+        'sw-cedge2-vlan': f'{rowText1[27]}',
+        'sw-mpls-port': f'{rowText1[28]}',
+        'sw-remote-con-net1': f'{rowText1[29]}',
+        'sw-remote-con-net2': f'{rowText1[30]}',
+        'sw-mgmt-vlan' : f'{rowText1[32]}'        
+    }
+
+    sdw04Replacements = {
+ 
+    }
+
+    try:
+        with open(sdw03Template, "r") as inputCSV:
+            authLog.info(f"Generating {rowText1[9]}-SDW-03-Template")
+            print(f"INFO: Generating {rowText1[9]}-SDW-03-Template.")
+            csvReader = csv.reader(inputCSV)
+               
+            rows = list(csvReader)
+
+            if len(rows) > 1:
+                secondRow = rows[1]
+                modifiedRow = []
+                for cell in secondRow:
+                    cellValue = str(cell).strip()
+                    for key, value in sdw03Replacements.items():
+                        if key.lower() in cellValue.lower():
+                            cellValue = cellValue.replace(key, value)
+                    modifiedRow.append(cellValue)
+                rows[1] = modifiedRow
+
+        with open(newSDW03Template, 'w', newline="") as outputCSV:
+            csvWriter = csv.writer(outputCSV)
+            csvWriter.writerows(rows)
+    
+        with open(sdw04Template, "r") as inputCSV1:
+            authLog.info(f"Generating {rowText1[9]}-SDW-04-Template")
+            print(f"INFO: Generating {rowText1[9]}-SDW-04-Template.")
+            csvReader1 = csv.reader(inputCSV1)
+               
+            rows1 = list(csvReader1)
+
+            if len(rows1) > 1:
+                secondRow1 = rows1[1]
+                modifiedRow1 = []
+                for cell1 in secondRow1:
+                    cellValue1 = str(cell1).strip()
+                    for key1, value1 in sdw04Replacements.items():
+                        if key1.lower() in cellValue1.lower():
+                            cellValue1 = cellValue1.replace(key1, value1)
+                    modifiedRow1.append(cellValue1)
+                rows1[1] = modifiedRow1
+            
+        with open(newSDW04Template, 'w', newline="") as outputCSV1:
+            csvWriter1 = csv.writer(outputCSV1)
+            csvWriter1.writerows(rows1)
+
+    except Exception as error:
+        print(f"ERROR: {error}\n", traceback.format_exc())
+        authLog.error(f"Error message: {error}\n", traceback.format_exc())
 
 def chooseDocx_vEdge(rowText):
     swHostname, username, netDevice = Auth(rowText[13])
@@ -361,7 +548,6 @@ def chooseDocx_vEdge(rowText):
             siteNo = input(f"Please input the new Site ID (Old Site ID: {rowText[44]}):")
             city = input("Please input the City: ")
             state = input("Please input the State: ")
-            siteCode = input(f"Please input the Site Code: ")
             mplsCircuitID = input("Please input the MPLS Circuit ID:")
             bb1Carrier = input("Please input the bb1-carrier: ")
             bb1Circuitid = input("Please input the bb1-circuitid: ")
@@ -414,6 +600,10 @@ def chooseDocx_vEdge(rowText):
             serialNumSDW03New = PID_SDW03 + serialNumSDW03
             serialNumSDW04New = PID_SDW04 + serialNumSDW04
 
+            siteCode = f'{rowText[2]}'
+            siteCode = re.sub(filterSiteCode, '', siteCode)
+            print(f"This is the side code:{siteCode}")
+            os.system("PAUSE")
             sw_host = f'{rowText[13]}'
 
             replaceText = {
@@ -635,7 +825,7 @@ def modNDLM2vEdge(rowText, rowText1):
             'sw-cedge1-port' : f'{rowText1[24]}',
             'sw-cedge2-port' : f'{rowText1[26]}',
             'sw-cedge1-mpls-port' : f'{rowText1[11]}',
-            'sw-cedge2-mpls-port' : f'{rowText1[22]}'
+            'sw-cedge2-mpls-port' : f'{rowText1[12]}'
         }
 
         ndlmFile1 = openpyxl.load_workbook(ndlmPath2)
@@ -655,14 +845,14 @@ def modNDLM2vEdge(rowText, rowText1):
 
     except FileNotFoundError:
         print("File not found. Please check the file path and try again.")
-        authLog.error(f"File not found in path {ndlmPath1}")
+        authLog.error(f"File not found in path {ndlmPath2}")
         authLog.error(traceback.format_exc())
 
     except Exception as error:
         print(f"ERROR: {error}\n", traceback.format_exc())
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
-def cEdgeTemplate(rowText, rowText1):
+def cEdgeTemplatevEdge(rowText, rowText1):
 
     for index, item in enumerate(rowText):
         print(f"rowText[{index}] with string: {item}")
@@ -671,8 +861,8 @@ def cEdgeTemplate(rowText, rowText1):
         print(f"rowText1[{index}] with string: {item}")
     os.system("PAUSE")
     
-    newSDW03Template = f'{rowText1[9]}-SDW-03-Template.csv'
-    newSDW04Template = f'{rowText1[9]}-SDW-04-Template.csv'
+    newSDW03Template = f'Outputs/{rowText1[9]}-SDW-03-Template.csv'
+    newSDW04Template = f'Outputs/{rowText1[9]}-SDW-04-Template.csv'
 
     sdw03Replacements = {
         'cedge1-host' : f'{rowText[2]}',
@@ -808,7 +998,7 @@ def cEdgeTemplate(rowText, rowText1):
                     for key, value in sdw03Replacements.items():
                         if key.lower() in cellValue.lower():
                             cellValue = cellValue.replace(key, value)
-                modifiedRow.append(cellValue)
+                    modifiedRow.append(cellValue)
                 rows[1] = modifiedRow
 
         with open(newSDW03Template, 'w', newline="") as outputCSV:
@@ -830,7 +1020,7 @@ def cEdgeTemplate(rowText, rowText1):
                     for key1, value1 in sdw04Replacements.items():
                         if key1.lower() in cellValue1.lower():
                             cellValue1 = cellValue1.replace(key1, value1)
-                modifiedRow1.append(cellValue1)
+                    modifiedRow1.append(cellValue1)
                 rows1[1] = modifiedRow1
             
         with open(newSDW04Template, 'w', newline="") as outputCSV1:

@@ -6,7 +6,7 @@ from utils import mkdir
 def main():  
     mkdir()  
     from log import authLog
-    from fileHandler import chooseCSV, chooseDocx_ISR, chooseDocx_vEdge, modNDLMvEdge, modNDLM2vEdge, cEdgeTemplate
+    from fileHandler import chooseCSV, chooseDocx_ISR, modNDLMISR, modNDLM2ISR, cEdgeTemplateISR, chooseDocx_vEdge, modNDLMvEdge, modNDLM2vEdge, cEdgeTemplatevEdge
     from functions import checkIsDigit
     while True:
         os.system("CLS")
@@ -19,24 +19,18 @@ def main():
                 docxValues = chooseDocx_vEdge(csvValues)
                 rowText = docxValues['rowText']
                 rowText1 = docxValues['rowText1']
-                for index, item in enumerate(rowText):
-                        print(f"rowText[{index}] with string: {item}")
-                os.system("PAUSE")
-                for index, item in enumerate(rowText1):
-                        print(f"rowText1[{index}] with string: {item}")
-                os.system("PAUSE")
                 modNDLMvEdge(rowText, rowText1)
                 modNDLM2vEdge(rowText, rowText1)
-                cEdgeTemplate(rowText, rowText1)
+                cEdgeTemplatevEdge(rowText, rowText1)
 
             if selection == "2":
                 csvValues = chooseCSV()
                 docxValues = chooseDocx_ISR(csvValues)
                 rowText = docxValues['rowText']
                 rowText1 = docxValues['rowText1']
-                modNDLMvEdge(rowText, rowText1)
-                modNDLM2vEdge(rowText, rowText1)
-                cEdgeTemplate(rowText, rowText1)
+                modNDLMISR(rowText, rowText1)
+                modNDLM2ISR(rowText, rowText1)
+                cEdgeTemplateISR(rowText, rowText1)
 
         else:
             authLog.error(f"Wrong option chosen {selection}")
@@ -51,24 +45,18 @@ def main():
                 docxValues = chooseDocx_vEdge(csvValues)
                 rowText = docxValues['rowText']
                 rowText1 = docxValues['rowText1']
-                for index, item in enumerate(rowText):
-                        print(f"rowText[{index}] with string: {item}")
-                os.system("PAUSE")
-                for index, item in enumerate(rowText1):
-                        print(f"rowText1[{index}] with string: {item}")
-                os.system("PAUSE")
                 modNDLMvEdge(rowText, rowText1)
                 modNDLM2vEdge(rowText, rowText1)
-                cEdgeTemplate(rowText, rowText1)
+                cEdgeTemplatevEdge(rowText, rowText1)
 
             if selection == "2":
                 csvValues = chooseCSV()
                 docxValues = chooseDocx_ISR(csvValues)
                 rowText = docxValues['rowText']
                 rowText1 = docxValues['rowText1']
-                modNDLMvEdge(rowText, rowText1)
-                modNDLM2vEdge(rowText, rowText1)
-                cEdgeTemplate(rowText, rowText1)
+                modNDLMISR(rowText, rowText1)
+                modNDLM2ISR(rowText, rowText1)
+                cEdgeTemplateISR(rowText, rowText1)
 
             if selection == "3":
                  break
