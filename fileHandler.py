@@ -264,8 +264,8 @@ def chooseDocx_ISR(rowText):
             manualReplaceList = [
                 serialNumSDW01,     #0
                 serialNumSDW02,     #1
-                serialNumSDW03,     #2
-                serialNumSDW04,     #3
+                serialNumSDW03New,  #2
+                serialNumSDW04New,  #3
                 cEdge1Loop,         #4
                 cEdge2Loop,         #5
                 siteNo,             #6
@@ -314,12 +314,16 @@ def chooseDocx_ISR(rowText):
 
 def modNDLMISR(rowText, rowText1):
     try:
+        cedge1_serial_no = f'{rowText1[2]}'
+        cedge1_serial_no = re.sub(PID_SDW03, '', cedge1_serial_no)
+        cedge2_serial_no = f'{rowText1[3]}'
+        cedge2_serial_no = re.sub(PID_SDW04, '', cedge2_serial_no)
         replaceText = {
             'site-code' : f'{rowText1[9]}',
             'vedge1-serial-no' : f'{rowText1[0]}',
             'vedge2-serial-no' : f'{rowText1[1]}',
-            'cedge1-serial-no' : f'{rowText1[2]}',
-            'cedge2-serial-no' : f'{rowText1[3]}',
+            'cedge1-serial-no' : cedge1_serial_no,
+            'cedge2-serial-no' : cedge2_serial_no,
             'cedge1-loop' : f'{rowText1[4]}',
             'cedge2-loop' : f'{rowText1[5]}',
             'snmp-location' : f'{rowText[3]}',
@@ -469,7 +473,62 @@ def cEdgeTemplateISR(rowText, rowText1):
     }
 
     sdw04Replacements = {
- 
+        'cedge1-host' : f'{rowText[2]}',
+        'snmp-location' : f'{rowText[3]}',
+        'cedge1-rtr-ip' : f'{rowText[6]}',
+        'cEdge-asn' : f'{rowText[8]}',
+        'cedge1-sw-ip' : f'{rowText[11]}',
+        'switch-asn' : f'{rowText[13]}',
+        'mpls-pe-ip' : f'{rowText[14]}',
+        'cedge2-tloc3-ext-ip' : f'{rowText[15]}',
+        'cedge2-host - gi0/0/3 - TLOC3' : f'{rowText[17]}',
+        'cedge1-tloc3-ip'	: f'{rowText[18]}',
+        'mpls-ce1-ip' : f'{rowText[29]}',
+        'mpls-speed' : f'{rowText[35]}',
+        'latitude' : f'{rowText[38]}',
+        'longitude' : f'{rowText[39]}',
+        # Here starts the second CSV file #
+        'cedge2-host'	: f'{rowText[44]}',
+        'bb1-down-speed' : f'{rowText[76]}',
+        'cedge2-rtr-ip' : f'{rowText[48]}',
+        'cedge2-sw-ip' : f'{rowText[53]}',	
+        'cedge2-tloc3-gate' : f'{rowText[57]}',	
+        'cedge1-host TLOC3 gi0/0/3' : f'{rowText[59]}',
+        'cedge2-tloc3-ext-ip/30' : f'{rowText[60]}',
+        'bb1-up-speed' : f'{rowText[75]}',	
+        'mpls-ce2-ip'	: f'{rowText[79]}',
+
+        'cedge1-serial-no' : f'{rowText1[2]}',
+        'cedge2-serial-no' : f'{rowText1[3]}',
+        'cedge1-loop' : f'{rowText1[4]}',
+        'cedge2-loop' : f'{rowText1[5]}',
+        'site-no'	: f'{rowText1[6]}',
+        'city': f'{rowText1[7]}',
+        'state': f'{rowText1[8]}',
+        'site-code': f'{rowText1[9]}',
+        'sw-mgmt-ip' : f'{rowText1[10]}',
+        'sw-host' : f'{rowText1[31]}',
+        'sw-cEdge1-mpls-port': f'{rowText1[11]}',
+        'sw-cEdge2-mpls-port': f'{rowText1[12]}',
+        'mpls-circuitid':  f'{rowText1[13]}',
+        'bb1-carrier': f'{rowText1[14]}',
+        'bb1-circuitid': f'{rowText1[15]}',
+        'cedge2-tloc3-port': f'{rowText1[16]}',
+        'cedge2-tloc3-ip': f'{rowText1[17]}',
+        'cedge2-tloc3-mask' : f'{rowText1[18]}',
+        'cedge2-tloc3-cidr': f'{rowText1[19]}',
+        'cedge1-lan-net': f'{rowText1[20]}',
+        'cedge2-lan-net': f'{rowText1[21]}',
+        'sw-loop': f'{rowText1[22]}',
+        'sw-mgmt-cidr': f'{rowText1[23]}',
+        'sw-cedge1-port': f'{rowText1[24]}',
+        'sw-cedge1-vlan': f'{rowText1[25]}',
+        'sw-cedge2-port': f'{rowText1[26]}',
+        'sw-cedge2-vlan': f'{rowText1[27]}',
+        'sw-mpls-port': f'{rowText1[28]}',
+        'sw-remote-con-net1': f'{rowText1[29]}',
+        'sw-remote-con-net2': f'{rowText1[30]}',
+        'sw-mgmt-vlan' : f'{rowText1[32]}' 
     }
 
     try:
@@ -487,7 +546,7 @@ def cEdgeTemplateISR(rowText, rowText1):
                     cellValue = str(cell).strip()
                     for key, value in sdw03Replacements.items():
                         if key.lower() in cellValue.lower():
-                            cellValue = cellValue.replace(key, value)
+                            cellValue = re.sub(re.escape(key), value, cellValue, flags=re.IGNORECASE)
                     modifiedRow.append(cellValue)
                 rows[1] = modifiedRow
 
@@ -509,7 +568,7 @@ def cEdgeTemplateISR(rowText, rowText1):
                     cellValue1 = str(cell1).strip()
                     for key1, value1 in sdw04Replacements.items():
                         if key1.lower() in cellValue1.lower():
-                            cellValue1 = cellValue1.replace(key1, value1)
+                            cellValue1 = re.sub(re.escape(key1), value1, cellValue1, flags=re.IGNORECASE)
                     modifiedRow1.append(cellValue1)
                 rows1[1] = modifiedRow1
             
@@ -717,8 +776,8 @@ def chooseDocx_vEdge(rowText):
             manualReplaceList = [
                 serialNumSDW01,     #0
                 serialNumSDW02,     #1
-                serialNumSDW03,     #2
-                serialNumSDW04,     #3
+                serialNumSDW03New,  #2
+                serialNumSDW04New,  #3
                 cEdge1Loop,         #4
                 cEdge2Loop,         #5
                 siteNo,             #6
@@ -769,12 +828,16 @@ def chooseDocx_vEdge(rowText):
 
 def modNDLMvEdge(rowText, rowText1):
     try:
+        cedge1_serial_no = f'{rowText1[2]}'
+        cedge1_serial_no = re.sub(PID_SDW03, '', cedge1_serial_no)
+        cedge2_serial_no = f'{rowText1[3]}'
+        cedge2_serial_no = re.sub(PID_SDW04, '', cedge2_serial_no)
         replaceText = {
             'site-code' : f'{rowText1[9]}',
             'vedge1-serial-no' : f'{rowText1[0]}',
             'vedge2-serial-no' : f'{rowText1[1]}',
-            'cedge1-serial-no' : f'{rowText1[2]}',
-            'cedge2-serial-no' : f'{rowText1[3]}',
+            'cedge1-serial-no' : cedge1_serial_no,
+            'cedge2-serial-no' : cedge2_serial_no,
             'cedge1-loop' : f'{rowText1[4]}',
             'cedge2-loop' : f'{rowText1[5]}',
             'snmp-location' : f'{rowText[3]}',
@@ -997,7 +1060,7 @@ def cEdgeTemplatevEdge(rowText, rowText1):
                     cellValue = str(cell).strip()
                     for key, value in sdw03Replacements.items():
                         if key.lower() in cellValue.lower():
-                            cellValue = cellValue.replace(key, value)
+                            cellValue = re.sub(re.escape(key), value, cellValue, flags=re.IGNORECASE)
                     modifiedRow.append(cellValue)
                 rows[1] = modifiedRow
 
@@ -1019,7 +1082,7 @@ def cEdgeTemplatevEdge(rowText, rowText1):
                     cellValue1 = str(cell1).strip()
                     for key1, value1 in sdw04Replacements.items():
                         if key1.lower() in cellValue1.lower():
-                            cellValue1 = cellValue1.replace(key1, value1)
+                            cellValue1 = re.sub(re.escape(key1), value1, cellValue1, flags=re.IGNORECASE)
                     modifiedRow1.append(cellValue1)
                 rows1[1] = modifiedRow1
             
