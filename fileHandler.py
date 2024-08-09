@@ -21,6 +21,8 @@ PID_SDW04 = 'C8300-1N1S-4T2X-'
 ndlmPath1 = "NDLM_Template.xlsx"
 ndlmPath2 = "NDLM_Tier2_Template.xlsx"
 
+outputFolder = "Outputs"
+
 sdw03Template = "sdw-03-template.csv"
 sdw04Template = "sdw-04-template.csv"
 
@@ -602,7 +604,7 @@ def modNDLMvEdge(rowText, rowText1):
                             cellValue = cellValue.replace(key, value)
                     cell.value = cellValue
 
-            newNDLMFile = f'Outputs/{rowText1[9]}-NDLM.xlsx'
+            newNDLMFile = os.path.join(outputFolder, f'Outputs/{rowText1[9]}-NDLM.xlsx')
             ndlmFile.save(newNDLMFile)
 
     except FileNotFoundError:
@@ -636,10 +638,10 @@ def modNDLM2vEdge(rowText, rowText1):
             'sw-cedge2-mpls-port' : f'{rowText1[22]}'
         }
 
-        ndlmFile = openpyxl.load_workbook(ndlmPath2)
-        ndlmFileSheet = ndlmFile.active
+        ndlmFile1 = openpyxl.load_workbook(ndlmPath2)
+        ndlmFileSheet1 = ndlmFile1.active
 
-        for row in ndlmFileSheet.iter_rows():
+        for row in ndlmFileSheet1.iter_rows():
             for cell in row:
                 if cell.value:
                     cellValue = str(cell.value).strip()
@@ -648,8 +650,8 @@ def modNDLM2vEdge(rowText, rowText1):
                             cellValue = cellValue.replace(key, value)
                     cell.value = cellValue
 
-            newNDLMFile = f'Outputs/{rowText1[9]}-NDLM-Tier2.xlsx'
-            ndlmFile.save(newNDLMFile)
+            newNDLMFile1 = os.path.join(outputFolder, f'Outputs/{rowText1[9]}-NDLM-Tier2.xlsx')
+            ndlmFile1.save(newNDLMFile1)
 
     except FileNotFoundError:
         print("File not found. Please check the file path and try again.")
@@ -791,12 +793,11 @@ def cEdgeTemplate(rowText, rowText1):
     }
 
     try:
-        with open(sdw03Template, "r") as inputCSV, \
-            open(newSDW03Template, 'w') as outputCSV:
+        with open(sdw03Template, "r") as inputCSV:
             authLog.info(f"Generating {rowText1[9]}-SDW-03-Template")
             print(f"INFO: Generating {rowText1[9]}-SDW-03-Template.")
             csvReader = csv.reader(inputCSV)
-            csvWriter = csv.writer(outputCSV)   
+               
             rows = list(csvReader)
 
             if len(rows) > 1:
@@ -809,15 +810,16 @@ def cEdgeTemplate(rowText, rowText1):
                             cellValue = cellValue.replace(key, value)
                 modifiedRow.append(cellValue)
                 rows[1] = modifiedRow
-            
+
+        with open(newSDW03Template, 'w', newline="") as outputCSV:
+            csvWriter = csv.writer(outputCSV)
             csvWriter.writerows(rows)
     
-        with open(sdw04Template, "r") as inputCSV1, \
-            open(newSDW04Template, 'w') as outputCSV1:
+        with open(sdw04Template, "r") as inputCSV1:
             authLog.info(f"Generating {rowText1[9]}-SDW-04-Template")
             print(f"INFO: Generating {rowText1[9]}-SDW-04-Template.")
             csvReader1 = csv.reader(inputCSV1)
-            csvWriter1 = csv.writer(outputCSV1)   
+               
             rows1 = list(csvReader1)
 
             if len(rows1) > 1:
@@ -831,6 +833,8 @@ def cEdgeTemplate(rowText, rowText1):
                 modifiedRow1.append(cellValue1)
                 rows1[1] = modifiedRow1
             
+        with open(newSDW04Template, 'w', newline="") as outputCSV1:
+            csvWriter1 = csv.writer(outputCSV1)
             csvWriter1.writerows(rows1)
 
     except Exception as error:
