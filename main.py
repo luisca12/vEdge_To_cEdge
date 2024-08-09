@@ -22,6 +22,7 @@ def main():
                 modNDLMvEdge(rowText, rowText1)
                 modNDLM2vEdge(rowText, rowText1)
                 cEdgeTemplatevEdge(rowText, rowText1)
+                break
 
             if selection == "2":
                 csvValues = chooseCSV()
@@ -31,12 +32,14 @@ def main():
                 modNDLMISR(rowText, rowText1)
                 modNDLM2ISR(rowText, rowText1)
                 cEdgeTemplateISR(rowText, rowText1)
+                break
 
         else:
             authLog.error(f"Wrong option chosen {selection}")
             inputErrorString()
             os.system("PAUSE")
-
+    while True:
+        os.system("CLS")
         menuStringEnd()
         selection = input("Please choose the option that you want: ")
         if checkIsDigit(selection):
@@ -59,8 +62,8 @@ def main():
                 cEdgeTemplateISR(rowText, rowText1)
 
             if selection == "3":
-                 break
-        
+                break
+    
         else:
             authLog.error(f"Wrong option chosen {selection}")
             inputErrorString()

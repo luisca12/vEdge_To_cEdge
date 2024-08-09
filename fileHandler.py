@@ -14,7 +14,7 @@ import ipaddress
 import openpyxl
 
 removeCIDR_Patt = r'/\d{2}'
-filterSiteCode = r'-sdw-0[1-9]}'
+filterSiteCode = r'-sdw-0[1-9]'
 
 PID_SDW03 = 'C8300-1N1S-4T2X-'
 PID_SDW04 = 'C8300-1N1S-4T2X-'
@@ -264,8 +264,8 @@ def chooseDocx_ISR(rowText):
             manualReplaceList = [
                 serialNumSDW01,     #0
                 serialNumSDW02,     #1
-                serialNumSDW03New,  #2
-                serialNumSDW04New,  #3
+                serialNumSDW03,     #2
+                serialNumSDW04,     #3
                 cEdge1Loop,         #4
                 cEdge2Loop,         #5
                 siteNo,             #6
@@ -444,7 +444,7 @@ def cEdgeTemplateISR(rowText, rowText1):
         'state': f'{rowText1[8]}',
         'site-code': f'{rowText1[9]}',
         'sw-mgmt-ip' : f'{rowText1[10]}',
-        'sw-host' : f'{rowText[31]}',
+        'sw-host' : f'{rowText1[31]}',
         'sw-cEdge1-mpls-port': f'{rowText1[11]}',
         'sw-cEdge2-mpls-port': f'{rowText1[12]}',
         'mpls-circuitid':  f'{rowText1[13]}',
@@ -717,8 +717,8 @@ def chooseDocx_vEdge(rowText):
             manualReplaceList = [
                 serialNumSDW01,     #0
                 serialNumSDW02,     #1
-                serialNumSDW03New,  #2
-                serialNumSDW04New,  #3
+                serialNumSDW03,     #2
+                serialNumSDW04,     #3
                 cEdge1Loop,         #4
                 cEdge2Loop,         #5
                 siteNo,             #6
