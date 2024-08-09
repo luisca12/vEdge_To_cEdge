@@ -614,7 +614,7 @@ def modNDLMvEdge(rowText, rowText1):
         print(f"ERROR: {error}\n", traceback.format_exc())
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
-def modNDLM2(rowText, rowText1):
+def modNDLM2vEdge(rowText, rowText1):
     try:
 
         replaceText = {
