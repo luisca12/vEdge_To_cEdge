@@ -604,7 +604,7 @@ def modNDLMvEdge(rowText, rowText1):
                             cellValue = cellValue.replace(key, value)
                     cell.value = cellValue
 
-            newNDLMFile = os.path.join(outputFolder, f'Outputs/{rowText1[9]}-NDLM.xlsx')
+            newNDLMFile = os.path.join(outputFolder, f'{rowText1[9]}-NDLM.xlsx')
             ndlmFile.save(newNDLMFile)
 
     except FileNotFoundError:
@@ -650,7 +650,7 @@ def modNDLM2vEdge(rowText, rowText1):
                             cellValue = cellValue.replace(key, value)
                     cell.value = cellValue
 
-            newNDLMFile1 = os.path.join(outputFolder, f'Outputs/{rowText1[9]}-NDLM-Tier2.xlsx')
+            newNDLMFile1 = os.path.join(outputFolder, f'{rowText1[9]}-NDLM-Tier2.xlsx')
             ndlmFile1.save(newNDLMFile1)
 
     except FileNotFoundError:
@@ -671,8 +671,8 @@ def cEdgeTemplate(rowText, rowText1):
         print(f"rowText1[{index}] with string: {item}")
     os.system("PAUSE")
     
-    newSDW03Template = f'Outputs/{rowText1[9]}-SDW-03-Template.csv'
-    newSDW04Template = f'Outputs/{rowText1[9]}-SDW-04-Template.csv'
+    newSDW03Template = f'{rowText1[9]}-SDW-03-Template.csv'
+    newSDW04Template = f'{rowText1[9]}-SDW-04-Template.csv'
 
     sdw03Replacements = {
         'cedge1-host' : f'{rowText[2]}',
