@@ -556,6 +556,7 @@ def chooseDocx_vEdge(rowText):
                 shIntDesCONOut1[1], #30
                 sw_host,            #31
                 '1500'              #32
+
             ]
 
             return {
@@ -574,19 +575,19 @@ def chooseDocx_vEdge(rowText):
             print(f"ERROR: {error}\n", traceback.format_exc())
             authLog.error(f"Wasn't possible to choose the DOCX file, error message: {error}\n{traceback.format_exc()}")
 
-def modNDLM(siteCode, serialNumSDW01, serialNumSDW02, serialNumSDW03, serialNumSDW04, cEdge1Loop, cEdge2Loop, snmpLocation, vEdge1Loop, vEdge2Loop):
+def modNDLMvEdge(rowText, rowText1):
     try:
         replaceText = {
-            'site-code' : f'{siteCode}',
-            'vedge1-serial-no' : f'{serialNumSDW01}',
-            'vedge2-serial-no' : f'{serialNumSDW02}',
-            'cedge1-serial-no' : f'{serialNumSDW03}',
-            'cedge2-serial-no' : f'{serialNumSDW04}',
-            'cedge1-loop' : f'{cEdge1Loop}',
-            'cedge2-loop' : f'{cEdge2Loop}',
-            'snmp-location' : f'{snmpLocation}',
-            'vedge1-loop': f'{vEdge1Loop}',
-            'vedge2-loop': f'{vEdge2Loop}'
+            'site-code' : f'{rowText1[9]}',
+            'vedge1-serial-no' : f'{rowText1[0]}',
+            'vedge2-serial-no' : f'{rowText1[1]}',
+            'cedge1-serial-no' : f'{rowText1[2]}',
+            'cedge2-serial-no' : f'{rowText1[3]}',
+            'cedge1-loop' : f'{rowText1[4]}',
+            'cedge2-loop' : f'{rowText1[5]}',
+            'snmp-location' : f'{rowText[3]}',
+            'vedge1-loop': f'{rowText[1]}',
+            'vedge2-loop': f'{rowText[46]}'
         }
 
         ndlmFile = openpyxl.load_workbook(ndlmPath1)
@@ -601,7 +602,7 @@ def modNDLM(siteCode, serialNumSDW01, serialNumSDW02, serialNumSDW03, serialNumS
                             cellValue = cellValue.replace(key, value)
                     cell.value = cellValue
 
-            newNDLMFile = f'Outputs/{siteCode}-NDLM.xlsx'
+            newNDLMFile = f'Outputs/{rowText1[9]}-NDLM.xlsx'
             ndlmFile.save(newNDLMFile)
 
     except FileNotFoundError:
@@ -613,29 +614,26 @@ def modNDLM(siteCode, serialNumSDW01, serialNumSDW02, serialNumSDW03, serialNumS
         print(f"ERROR: {error}\n", traceback.format_exc())
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
-def modNDLM2(siteCode, cEdge1Loop, cEdge2Loop, snmpLocation, city, state, siteNo,
-             cedge1_host, cedge2_host, sw_host, sw_mpls_port, cEdge2TLOC3_Port,
-             swcEdge1_port, swcEdge2_port, swcEdge1_mplsPort, swcEdge2_mplsPort
-            ):
+def modNDLM2(rowText, rowText1):
     try:
 
         replaceText = {
-            'site-code' : f'{siteCode}',
-            'cedge1-loop' : f'{cEdge1Loop}',
-            'cedge2-loop' : f'{cEdge2Loop}',
-            'snmp-location' : f'{snmpLocation}',
-            'city': city,
-            'state': state,
-            'site-no': siteNo,
-            'cedge1-host': cedge1_host,
-            'cedge2-host': cedge2_host,
-            'sw-host' : sw_host,
-            'sw-mpls-port' : sw_mpls_port,
-            'cedge2-tloc3-port': cEdge2TLOC3_Port,
-            'sw-cedge1-port' : swcEdge1_port,
-            'sw-cedge2-port' : swcEdge2_port,
-            'sw-cedge1-mpls-port' : swcEdge1_mplsPort,
-            'sw-cedge2-mpls-port' : swcEdge2_mplsPort
+            'site-code' : f'{rowText1[9]}',
+            'cedge1-loop' : f'{rowText1[4]}',
+            'cedge2-loop' : f'{rowText1[5]}',
+            'snmp-location' : f'{rowText[3]}',
+            'city': f'{rowText1[7]}',
+            'state': f'{rowText1[8]}',
+            'site-no': f'{rowText1[6]}',
+            'cedge1-host': f'{rowText[2]}',
+            'cedge2-host': f'{rowText[47]}',
+            'sw-host' : f'{rowText1[31]}',
+            'sw-mpls-port' : f'{rowText1[28]}',
+            'cedge2-tloc3-port': f'{rowText1[16]}',
+            'sw-cedge1-port' : f'{rowText1[24]}',
+            'sw-cedge2-port' : f'{rowText1[26]}',
+            'sw-cedge1-mpls-port' : f'{rowText1[11]}',
+            'sw-cedge2-mpls-port' : f'{rowText1[22]}'
         }
 
         ndlmFile = openpyxl.load_workbook(ndlmPath2)
@@ -650,7 +648,7 @@ def modNDLM2(siteCode, cEdge1Loop, cEdge2Loop, snmpLocation, city, state, siteNo
                             cellValue = cellValue.replace(key, value)
                     cell.value = cellValue
 
-            newNDLMFile = f'Outputs/{siteCode}-NDLM-Tier2.xlsx'
+            newNDLMFile = f'Outputs/{rowText1[9]}-NDLM-Tier2.xlsx'
             ndlmFile.save(newNDLMFile)
 
     except FileNotFoundError:
@@ -799,33 +797,41 @@ def cEdgeTemplate(rowText, rowText1):
             print(f"INFO: Generating {rowText1[9]}-SDW-03-Template.")
             csvReader = csv.reader(inputCSV)
             csvWriter = csv.writer(outputCSV)   
+            rows = list(csvReader)
 
-            for rows in csvReader:
-                rowData = []
-                for cell in rows:
+            if len(rows) > 1:
+                secondRow = rows[1]
+                modifiedRow = []
+                for cell in secondRow:
                     cellValue = str(cell).strip()
                     for key, value in sdw03Replacements.items():
                         if key.lower() in cellValue.lower():
                             cellValue = cellValue.replace(key, value)
-                    rowData.append(cellValue)
-                csvWriter.writerow(rowData)
-        
+                modifiedRow.append(cellValue)
+                rows[1] = modifiedRow
+            
+            csvWriter.writerows(rows)
+    
         with open(sdw04Template, "r") as inputCSV1, \
             open(newSDW04Template, 'w') as outputCSV1:
             authLog.info(f"Generating {rowText1[9]}-SDW-04-Template")
             print(f"INFO: Generating {rowText1[9]}-SDW-04-Template.")
             csvReader1 = csv.reader(inputCSV1)
             csvWriter1 = csv.writer(outputCSV1)   
+            rows1 = list(csvReader1)
 
-            for rows in csvReader1:
-                rowData1 = []
-                for cell in rows:
-                    cellValue1 = str(cell).strip()
-                    for key, value in sdw04Replacements.items():
-                        if key.lower() in cellValue1.lower():
-                            cellValue1 = cellValue1.replace(key, value)
-                    rowData1.append(cellValue1)
-                csvWriter1.writerow(rowData1)
+            if len(rows1) > 1:
+                secondRow1 = rows1[1]
+                modifiedRow1 = []
+                for cell1 in secondRow1:
+                    cellValue1 = str(cell1).strip()
+                    for key1, value1 in sdw04Replacements.items():
+                        if key1.lower() in cellValue1.lower():
+                            cellValue1 = cellValue1.replace(key1, value1)
+                modifiedRow1.append(cellValue1)
+                rows1[1] = modifiedRow1
+            
+            csvWriter1.writerows(rows1)
 
     except Exception as error:
         print(f"ERROR: {error}\n", traceback.format_exc())
