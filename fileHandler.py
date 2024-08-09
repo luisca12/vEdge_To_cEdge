@@ -333,7 +333,6 @@ def chooseDocx_ISR(rowText):
             authLog.error(f"Wasn't possible to choose the DOCX file, error message: {error}\n{traceback.format_exc()}")
 
 def chooseDocx_vEdge(rowText):
-    print(f"This is rowText[13], switch hostname: {rowText[13]}")
     swHostname, username, netDevice = Auth(rowText[13])
     shHostnameOut, netVlan1101, netVlan1103, shIntDesSDWOut, shIntDesCONOut1, shIntStatMPLSOut1, shVlanMgmtIP, shVlanMgmtCIDR, shLoop0Out = shCoreInfo(swHostname, username, netDevice)
 
@@ -668,7 +667,7 @@ def cEdgeTemplate(rowText, rowText1):
     for index, item in enumerate(rowText):
         print(f"rowText[{index}] with string: {item}")
     
-    for index, item in enumerate(rowText):
+    for index, item in enumerate(rowText1):
         print(f"rowText1[{index}] with string: {item}")
     os.system("PAUSE")
     

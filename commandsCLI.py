@@ -43,44 +43,64 @@ def shCoreInfo(swHostname, username, netDevice):
                 authLog.info(f"User {username} successfully found the hostname {shHostnameOut}")
                 shHostnameOut = shHostnameOut.split(' ')[1]
                 shHostnameOut = shHostnameOut + "#"
-                print(f"This is the hostname: {shHostnameOut}")
+                print(f"INFO: This is the hostname: {shHostnameOut}")
 
                 shInt1101Out = sshAccess.send_command(shInt1101)
+                authLog.info(f"Automation successfully ran the command \"{shInt1101}\" on device {swHostname}\n{shHostnameOut}{shInt1101}\n{shInt1101Out}")
                 ipVlan1101 = shInt1101Out.split(' ')[3]
-                print(f"This is ipVlan1101: {ipVlan1101}")
+                print(f"INFO: Found the following IP for Vlan1101: {ipVlan1101}")
+                authLog.info(f"Found the following IP for Vlan1101:{ipVlan1101}")
                 maskVlan1101 = shInt1101Out.split(' ')[4]
-                print(f"This is maskVlan1101: {maskVlan1101}\n")
+                print(f"INFO: Found the following Mask for Vlan1101: {maskVlan1101}\n")
+                authLog.info(f"Found the following Mask for Vlan1101:{maskVlan1101}")
                 netVlan1101 = ipaddress.IPv4Network(f"{ipVlan1101}/{maskVlan1101}", strict=False).network_address
+                authLog.info(f"Found the network for Vlan1101:{netVlan1101}")
 
                 shInt1103Out = sshAccess.send_command(shInt1103)
+                authLog.info(f"Automation successfully ran the command \"{shInt1103}\" on device {swHostname}\n{shHostnameOut}{shInt1103}\n{shInt1103Out}")
                 ipVlan1103 = shInt1103Out.split(' ')[3]
-                print(f"This is ipVlan1103: {ipVlan1103}")
+                print(f"INFO: Found the following IP for Vlan1103: {ipVlan1103}")
+                authLog.info(f"Found the following IP for Vlan1103:{ipVlan1103}")
                 maskVlan1103 = shInt1103Out.split(' ')[4]
-                print(f"This is maskVlan1103: {maskVlan1103}\n")
+                print(f"INFO: Found the following Mask for Vlan11033: {maskVlan1103}\n")
+                authLog.info(f"Found the following Mask for Vlan1103:{maskVlan1103}")
                 netVlan1103 = ipaddress.IPv4Network(f"{ipVlan1103}/{maskVlan1103}", strict=False).network_address
+                authLog.info(f"Found the network for Vlan1103:{netVlan1103}")
 
                 shIntDesSDWOut = sshAccess.send_command(shIntDesSDW)
-                print(f"This is {shIntDesSDW}:\n{shIntDesSDWOut}\n")
+                print(f"INFO: This is {shIntDesSDW}:\n{shIntDesSDWOut}\n")
+                authLog.info(f"Automation successfully ran the command \"{shIntDesSDW}\" on device {swHostname}\n{shHostnameOut}{shIntDesSDW}\n{shIntDesSDWOut}")
 
                 shIntDesCONOut = sshAccess.send_command(shIntDesCON)
                 shIntDesCONOut1 = re.findall(intPatt, shIntDesCONOut)
-                print(f"Show int Des | inc Con:\n{shIntDesCONOut}\nInterfaces:{shIntDesCONOut1}\n")
+                print(f"INFO: Show int Des | inc Con:\n{shIntDesCONOut}\nInterfaces:{shIntDesCONOut1}\n")
+                authLog.info(f"Automation successfully ran the command \"{shIntDesCON}\" on device {swHostname}\n{shHostnameOut}{shIntDesCON}\n{shIntDesCONOut}")
+                authLog.info(f"Automation successfully found the following interfaces: {shIntDesCONOut1}")
 
                 shIntStatMPLSOut = sshAccess.send_command(shIntStatMPLS)
                 shIntStatMPLSOut1 = re.findall(intPatt, shIntStatMPLSOut)
-                print(f"Show int Des | inc Con:\n{shIntStatMPLSOut}\nInterfaces:{shIntStatMPLSOut1}\n")
+                print(f"INFO: Show int Des | inc Con:\n{shIntStatMPLSOut}\nInterfaces:{shIntStatMPLSOut1}\n")
+                authLog.info(f"Automation successfully ran the command \"{shIntStatMPLS}\" on device {swHostname}\n{shHostnameOut}{shIntStatMPLS}\n{shIntStatMPLSOut}")
+                authLog.info(f"Automation successfully found the following interfaces: {shIntStatMPLSOut1}")
 
                 shVlanMgmtOut = sshAccess.send_command(shVlanMgmt)
+                authLog.info(f"Automation successfully ran the command \"{shVlanMgmt}\" on device {swHostname}\n{shHostnameOut}{shVlanMgmt}\n{shVlanMgmtOut}")
                 shVlanMgmtIP = shVlanMgmtOut.split(' ')[3]
-                print(f"This is shVlanMgmtIP: {shVlanMgmtIP}")
+                print(f"INFO: Found the Management VLAN (1500) IP: {shVlanMgmtIP}")
+                authLog.info(f"Found the Management VLAN (1500) IP:{shVlanMgmtIP}")
                 shVlanMgmtMask = shVlanMgmtOut.split(' ')[4]
-                print(f"This is shVlanMgmtMask: {shVlanMgmtMask}")
+                print(f"INFO: Found the Management VLAN (1500) Mask: {shVlanMgmtMask}")
+                authLog.info(f"Found the Management VLAN (1500) Mask: {shVlanMgmtMask}")
                 shVlanMgmtCIDR = ipaddress.IPv4Network(f'{shVlanMgmtIP}/{shVlanMgmtMask}', strict=False).prefixlen
-                print(f"This is shVlanMgmtCIDR: {shVlanMgmtCIDR}\n")
+                print(f"INFO: Found the Management VLAN (1500) CIDR: {shVlanMgmtCIDR}\n")
+                authLog.info(f"Found the Management VLAN (1500) CIDR: {shVlanMgmtCIDR}")
 
                 shLoop0Out = sshAccess.send_command(shLoop0)
+                authLog.info(f"Automation successfully ran the command \"{shLoop0}\" on device {swHostname}\n{shHostnameOut}{shLoop0}\n{shLoop0Out}")
                 shLoop0Out = shLoop0Out.split(' ')[3]
-                print(f"This is switch loopback 0 IP: {shLoop0Out}\n")
+                print(f"INFO: Found the Switch Loopback 0 IP: {shLoop0Out}\n")
+                authLog.info(f"Found the Switch Loopback 0 IP: {shVlanMgmtCIDR}")
+
                 os.system("PAUSE")
 
                 return shHostnameOut, netVlan1101, netVlan1103, shIntDesSDWOut, shIntDesCONOut1, shIntStatMPLSOut1, shVlanMgmtIP, shVlanMgmtCIDR, shLoop0Out
