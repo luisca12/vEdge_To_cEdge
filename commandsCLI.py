@@ -79,7 +79,7 @@ def shCoreInfo(swHostname, username, netDevice):
 
                 shIntStatMPLSOut = sshAccess.send_command(shIntStatMPLS)
                 shIntStatMPLSOut1 = re.findall(intPatt, shIntStatMPLSOut)
-                print(f"INFO: Show int Des | inc Con:\n{shIntStatMPLSOut}\nInterfaces:{shIntStatMPLSOut1}\n")
+                print(f"INFO: {shIntStatMPLS}:\n{shIntStatMPLSOut}\nInterfaces:{shIntStatMPLSOut1}\n")
                 authLog.info(f"Automation successfully ran the command \"{shIntStatMPLS}\" on device {swHostname}\n{shHostnameOut}{shIntStatMPLS}\n{shIntStatMPLSOut}")
                 authLog.info(f"Automation successfully found the following interfaces: {shIntStatMPLSOut1}")
 
