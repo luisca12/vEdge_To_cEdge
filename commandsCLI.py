@@ -14,7 +14,7 @@ shLoop0 = "show run interface lo0 | inc ip address"
 shIntDesSDW = "show interface description | inc SDW|sdw"
 shIntDesCON = "show interface description | inc CON"
 
-shIntStatMPLS = "show interface status | inc LUM"
+shIntStatMPLS = "show interface status | inc LUM|lum|Lumen|lumen"
 shHostname = "show run | i hostname"
 
 intPatt = r'[a-zA-Z]+\d+\/(?:\d+\/)*\d+'
