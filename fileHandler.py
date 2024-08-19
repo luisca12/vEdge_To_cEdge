@@ -61,9 +61,9 @@ def chooseCSV():
                 authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
                 
     mergedData = [item for sublist in csvDataList for item in sublist]
-    for index, item in enumerate(mergedData):
-        print(f"rowText[{index}] with string: {item}")
-    os.system("PAUSE")
+    # for index, item in enumerate(mergedData):
+    #     print(f"rowText[{index}] with string: {item}")
+    # os.system("PAUSE")
     return mergedData
 
 def chooseDocx_ISR(rowText):
@@ -107,33 +107,33 @@ def chooseDocx_ISR(rowText):
             swcEdge1_mplsPort = input("Please input the Switch port for SDW-03 gi0/0/2 connection to Lumen: ")
             swcEdge2_mplsPort = input("Please input the Switch port for SDW-04 gi0/0/2 connection to Lumen: ")
 
-            print("\nrowText 2:", rowText[2], "rowText 17:", rowText[17])
-            print("After changes:")
+            # print("\nrowText 2:", rowText[2], "rowText 17:", rowText[17])
+            # print("After changes:")
             rowText[2] = re.sub('01', '03', rowText[2])
             rowText[17] = re.sub('02', '04', rowText[17])
             rowText[17] = re.sub('ge0/3', 'ge0/0/3', rowText[17])
-            print("rowText 2:", rowText[2], "rowText 17:", rowText[17])
-            os.system("PAUSE")
+            # print("rowText 2:", rowText[2], "rowText 17:", rowText[17])
+            # os.system("PAUSE")
 
-            print("\nrowText 44:", rowText[44], "rowText 59:", rowText[59])
-            print("After changes:")
+            # print("\nrowText 44:", rowText[44], "rowText 59:", rowText[59])
+            # print("After changes:")
             rowText[44] = re.sub('02', '04', rowText[44])
             rowText[59] = re.sub('01', '03', rowText[59])
             rowText[59] = re.sub('ge0/3', 'ge0/0/3', rowText[59])
-            print("rowText 44:", rowText[44], "rowText 59:", rowText[59])
-            os.system("PAUSE")
+            # print("rowText 44:", rowText[44], "rowText 59:", rowText[59])
+            # os.system("PAUSE")
 
-            print("rowText 6:", rowText[6], "rowText 18:", rowText[18], "rowText 29:", rowText[29], \
-                  f"rowText 48:", rowText[48], "rowText 79:", rowText[79],"")
-            print("After changes:")
+            # print("rowText 6:", rowText[6], "rowText 18:", rowText[18], "rowText 29:", rowText[29], \
+            #       f"rowText 48:", rowText[48], "rowText 79:", rowText[79],"")
+            # print("After changes:")
             rowText[6] = re.sub(removeCIDR_Patt, '', rowText[6])
             rowText[18] = re.sub(removeCIDR_Patt, '', rowText[18])
             rowText[29] = re.sub(removeCIDR_Patt, '', rowText[29])
             rowText[48] = re.sub(removeCIDR_Patt, '', rowText[48])
             rowText[79] = re.sub(removeCIDR_Patt, '', rowText[79])
-            print("rowText 6:", rowText[6], "rowText 18:", rowText[18], "rowText 29:", rowText[29], \
-                  f"rowText 48:", rowText[48], "rowText 79:", rowText[79],"")
-            os.system("PAUSE")
+            # print("rowText 6:", rowText[6], "rowText 18:", rowText[18], "rowText 29:", rowText[29], \
+            #       f"rowText 48:", rowText[48], "rowText 79:", rowText[79],"")
+            # os.system("PAUSE")
 
             cedge2TLOC3_List = rowText[66]
             cedge2TLOC3_STR = ''.join(cedge2TLOC3_List)
@@ -152,7 +152,7 @@ def chooseDocx_ISR(rowText):
             siteCode = f'{rowText[2]}'
             siteCode = re.sub(filterSiteCode, '', siteCode)
             print(f"This is the side code:{siteCode}")
-            os.system("PAUSE")
+            # os.system("PAUSE")
             sw_host = f'{rowText[12]}'
 
             replaceText = {
@@ -182,8 +182,8 @@ def chooseDocx_ISR(rowText):
                 'mpls-ce2-ip'	: f'{rowText[79]}'
             }
 
-            print(json.dumps(replaceText, indent=4))
-            os.system("PAUSE")
+            # print(json.dumps(replaceText, indent=4))
+            # os.system("PAUSE")
 
             stringRegexPatt = {
                 'cedge1-serial-no' : serialNumSDW03New,
@@ -341,6 +341,7 @@ def modNDLMISR(rowText, rowText1):
                     for key, value in replaceText.items():
                         if key.lower() in cellValue.lower():
                             cellValue = cellValue.replace(key, value)
+                            authLog.info(f"Replacing '{key}' with '{value}' in the NDLM File 1")
                     cell.value = cellValue
 
             newNDLMFile = os.path.join(outputFolder, f'{rowText1[9]}-NDLM.xlsx')
@@ -387,6 +388,7 @@ def modNDLM2ISR(rowText, rowText1):
                     for key, value in replaceText.items():
                         if key.lower() in cellValue.lower():
                             cellValue = cellValue.replace(key, value)
+                            authLog.info(f"Replacing '{key}' with '{value}' in the NDLM File 2")
                     cell.value = cellValue
 
             newNDLMFile1 = os.path.join(outputFolder, f'{rowText1[9]}-NDLM-Tier2.xlsx')
@@ -403,12 +405,12 @@ def modNDLM2ISR(rowText, rowText1):
 
 def cEdgeTemplateISR(rowText, rowText1):
 
-    for index, item in enumerate(rowText):
-        print(f"rowText[{index}] with string: {item}")
+    # for index, item in enumerate(rowText):
+    #     print(f"rowText[{index}] with string: {item}")
     
-    for index, item in enumerate(rowText1):
-        print(f"rowText1[{index}] with string: {item}")
-    os.system("PAUSE")
+    # for index, item in enumerate(rowText1):
+    #     print(f"rowText1[{index}] with string: {item}")
+    # os.system("PAUSE")
     
     newSDW03Template = f'Outputs/{rowText1[9]}-SDW-03-Template.csv'
     newSDW04Template = f'Outputs/{rowText1[9]}-SDW-04-Template.csv'
@@ -542,11 +544,14 @@ def cEdgeTemplateISR(rowText, rowText1):
             if len(rows) > 1:
                 secondRow = rows[1]
                 modifiedRow = []
-                for cell in secondRow:
+                for index, cell in enumerate(secondRow):
                     cellValue = str(cell).strip()
+                    originalCellValue = cellValue
                     for key, value in sdw03Replacements.items():
                         if key.lower() in cellValue.lower():
                             cellValue = re.sub(re.escape(key), value, cellValue, flags=re.IGNORECASE)
+                            authLog.info(f"Replacing '{key}' with '{value}' in row 2, cell {index + 1}:" \
+                                         f"'{originalCellValue}' -> '{cellValue}', in the SDW-03-Template")
                     modifiedRow.append(cellValue)
                 rows[1] = modifiedRow
 
@@ -564,11 +569,15 @@ def cEdgeTemplateISR(rowText, rowText1):
             if len(rows1) > 1:
                 secondRow1 = rows1[1]
                 modifiedRow1 = []
-                for cell1 in secondRow1:
+                for index1, cell1 in enumerate(secondRow1):
                     cellValue1 = str(cell1).strip()
+                    originalCellValue1 = cellValue1
+
                     for key1, value1 in sdw04Replacements.items():
                         if key1.lower() in cellValue1.lower():
                             cellValue1 = re.sub(re.escape(key1), value1, cellValue1, flags=re.IGNORECASE)
+                            authLog.info(f"Replacing '{key1}' with '{value1}' in row 2, cell {index1 + 1}:" \
+                                         f"'{originalCellValue1}' -> '{cellValue1}', in the SDW-04-Template")
                     modifiedRow1.append(cellValue1)
                 rows1[1] = modifiedRow1
             
@@ -621,33 +630,33 @@ def chooseDocx_vEdge(rowText):
             swcEdge1_mplsPort = input("Please input the Switch port for SDW-03 gi0/0/2 connection to Lumen: ")
             swcEdge2_mplsPort = input("Please input the Switch port for SDW-04 gi0/0/2 connection to Lumen: ")
 
-            print("\nrowText 2:", rowText[2], "rowText 20:", rowText[20])
-            print("After changes:")
+            # print("\nrowText 2:", rowText[2], "rowText 20:", rowText[20])
+            # print("After changes:")
             rowText[2] = re.sub('01', '03', rowText[2])
             rowText[20] = re.sub('02', '04', rowText[20])
             rowText[20] = re.sub('ge0/3', 'ge0/0/3', rowText[20])
-            print("rowText 2:", rowText[2], "rowText 20:", rowText[20])
-            os.system("PAUSE")
+            # print("rowText 2:", rowText[2], "rowText 20:", rowText[20])
+            # os.system("PAUSE")
 
-            print("\nrowText 47:", rowText[47], "rowText 65:", rowText[65])
-            print("After changes:")
+            # print("\nrowText 47:", rowText[47], "rowText 65:", rowText[65])
+            # print("After changes:")
             rowText[47] = re.sub('02', '04', rowText[47])
             rowText[65] = re.sub('01', '03', rowText[65])
             rowText[65] = re.sub('ge0/3', 'ge0/0/3', rowText[65])
-            print("rowText 47:", rowText[47], "rowText 65:", rowText[65])
-            os.system("PAUSE")
+            # print("rowText 47:", rowText[47], "rowText 65:", rowText[65])
+            # os.system("PAUSE")
 
-            print("rowText 6:", rowText[6], "rowText 21:", rowText[21], "rowText 32:", rowText[32], \
-                  f"rowText 51:", rowText[51], "rowText 85:", rowText[85],"")
-            print("After changes:")
+            # print("rowText 6:", rowText[6], "rowText 21:", rowText[21], "rowText 32:", rowText[32], \
+            #       f"rowText 51:", rowText[51], "rowText 85:", rowText[85],"")
+            # print("After changes:")
             rowText[6] = re.sub(removeCIDR_Patt, '', rowText[6])
             rowText[21] = re.sub(removeCIDR_Patt, '', rowText[21])
             rowText[32] = re.sub(removeCIDR_Patt, '', rowText[32])
             rowText[51] = re.sub(removeCIDR_Patt, '', rowText[51])
             rowText[85] = re.sub(removeCIDR_Patt, '', rowText[85])
-            print("rowText 6:", rowText[6], "rowText 21:", rowText[21], "rowText 32:", rowText[32], \
-                  f"rowText 51:", rowText[51], "rowText 85:", rowText[85],"")
-            os.system("PAUSE")
+            # print("rowText 6:", rowText[6], "rowText 21:", rowText[21], "rowText 32:", rowText[32], \
+            #       f"rowText 51:", rowText[51], "rowText 85:", rowText[85],"")
+            # os.system("PAUSE")
 
             cedge2TLOC3_List = rowText[72]
             cedge2TLOC3_STR = ''.join(cedge2TLOC3_List)
@@ -662,7 +671,7 @@ def chooseDocx_vEdge(rowText):
             siteCode = f'{rowText[2]}'
             siteCode = re.sub(filterSiteCode, '', siteCode)
             print(f"This is the side code:{siteCode}")
-            os.system("PAUSE")
+            # os.system("PAUSE")
             sw_host = f'{rowText[13]}'
 
             replaceText = {
@@ -692,8 +701,8 @@ def chooseDocx_vEdge(rowText):
                 'mpls-ce2-ip'	: f'{rowText[85]}'
             }
 
-            print(json.dumps(replaceText, indent=4))
-            os.system("PAUSE")
+            # print(json.dumps(replaceText, indent=4))
+            # os.system("PAUSE")
 
             stringRegexPatt = {
                 'cedge1-serial-no' : serialNumSDW03New,
@@ -855,6 +864,7 @@ def modNDLMvEdge(rowText, rowText1):
                     for key, value in replaceText.items():
                         if key.lower() in cellValue.lower():
                             cellValue = cellValue.replace(key, value)
+                            authLog.info(f"Replacing '{key}' with '{value}' in the NDLM File 1")
                     cell.value = cellValue
 
             newNDLMFile = os.path.join(outputFolder, f'{rowText1[9]}-NDLM.xlsx')
@@ -901,6 +911,7 @@ def modNDLM2vEdge(rowText, rowText1):
                     for key, value in replaceText.items():
                         if key.lower() in cellValue.lower():
                             cellValue = cellValue.replace(key, value)
+                            authLog.info(f"Replacing '{key}' with '{value}' in the NDLM File 2")
                     cell.value = cellValue
 
             newNDLMFile1 = os.path.join(outputFolder, f'{rowText1[9]}-NDLM-Tier2.xlsx')
@@ -917,12 +928,12 @@ def modNDLM2vEdge(rowText, rowText1):
 
 def cEdgeTemplatevEdge(rowText, rowText1):
 
-    for index, item in enumerate(rowText):
-        print(f"rowText[{index}] with string: {item}")
+    # for index, item in enumerate(rowText):
+    #     print(f"rowText[{index}] with string: {item}")
     
-    for index, item in enumerate(rowText1):
-        print(f"rowText1[{index}] with string: {item}")
-    os.system("PAUSE")
+    # for index, item in enumerate(rowText1):
+    #     print(f"rowText1[{index}] with string: {item}")
+    # os.system("PAUSE")
     
     newSDW03Template = f'Outputs/{rowText1[9]}-SDW-03-Template.csv'
     newSDW04Template = f'Outputs/{rowText1[9]}-SDW-04-Template.csv'
@@ -1056,11 +1067,14 @@ def cEdgeTemplatevEdge(rowText, rowText1):
             if len(rows) > 1:
                 secondRow = rows[1]
                 modifiedRow = []
-                for cell in secondRow:
+                for index, cell in enumerate(secondRow):
                     cellValue = str(cell).strip()
+                    originalCellValue = cellValue
                     for key, value in sdw03Replacements.items():
                         if key.lower() in cellValue.lower():
                             cellValue = re.sub(re.escape(key), value, cellValue, flags=re.IGNORECASE)
+                            authLog.info(f"Replacing '{key}' with '{value}' in row 2, cell {index + 1}:" \
+                                         f"'{originalCellValue}' -> '{cellValue}', in the SDW-03-Template")
                     modifiedRow.append(cellValue)
                 rows[1] = modifiedRow
 
@@ -1078,11 +1092,15 @@ def cEdgeTemplatevEdge(rowText, rowText1):
             if len(rows1) > 1:
                 secondRow1 = rows1[1]
                 modifiedRow1 = []
-                for cell1 in secondRow1:
+                for index1, cell1 in enumerate(secondRow1):
                     cellValue1 = str(cell1).strip()
+                    originalCellValue1 = cellValue1
+
                     for key1, value1 in sdw04Replacements.items():
                         if key1.lower() in cellValue1.lower():
                             cellValue1 = re.sub(re.escape(key1), value1, cellValue1, flags=re.IGNORECASE)
+                            authLog.info(f"Replacing '{key1}' with '{value1}' in row 2, cell {index1 + 1}:" \
+                                         f"'{originalCellValue1}' -> '{cellValue1}', in the SDW-04-Template")
                     modifiedRow1.append(cellValue1)
                 rows1[1] = modifiedRow1
             

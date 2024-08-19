@@ -1,35 +1,27 @@
 
-from netmiko.exceptions import NetMikoAuthenticationException, NetMikoTimeoutException
-from functions import checkYNInput,validateIP,requestLogin,checkReachPort22
+from functions import validateIP,requestLogin
 from strings import greetingString
 from log import *
 from log import invalidIPLog
-import socket
 import traceback
-import csv
 import os
 import logging
 
 username = ""
 execPrivPassword = ""
 netDevice = {}
-swHostname = ""
 
-def Auth(swHostname1):
-    global username, execPrivPassword, netDevice, swHostname
-
-    swHostname = swHostname1
+def Auth(swHostname):
+    global username, execPrivPassword, netDevice
 
     os.system("CLS")
     greetingString()
     while True:
-        swHostname
-        validateIP(swHostname) # True or False
-        swHostname = checkReachPort22(swHostname)
+        swHostname1 = validateIP(swHostname) # Returns the validated/reachable hostname
         authLog.error(f"User {username} input the following invalid IP: {swHostname}")
         authLog.debug(traceback.format_exc())
         break
         
-    swHostname, username, netDevice = requestLogin(swHostname)
+    swHostname, username, netDevice = requestLogin(swHostname1)
 
     return swHostname,username,netDevice
