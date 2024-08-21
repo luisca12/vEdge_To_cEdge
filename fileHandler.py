@@ -34,7 +34,7 @@ def chooseCSV():
 
     for i in range(2):
         while True:
-            csvFile = input(f"Please enter the path to the CSV file {i + 1}: ")
+            csvFile = input(f"Please enter the name of the CSV file for SDW-0{i + 1}: ")
             try:
                 with open(csvFile, "r") as csvFileFinal:
                     authLog.info(f"User chose  the CSV File path: {csvFile}")

@@ -78,14 +78,14 @@ def requestLogin(swHostname):
         try:
             username = input("Please enter your username: ")
             password = getpass.getpass("Please enter your password: ")
-            execPrivPassword = getpass.getpass("Please input your enable password: ")
+            # execPrivPassword = getpass.getpass("Please input your enable password: ")
 
             netDevice = {
                 'device_type': 'cisco_xe',
                 'ip': swHostname,
                 'username': username,
                 'password': password,
-                'secret': execPrivPassword
+                'secret': password
             }
             # print(f"This is netDevice: {netDevice}\n")
             # print(f"This is swHostname: {swHostname}\n")
@@ -114,27 +114,5 @@ def requestLogin(swHostname):
             authLog.error(f"Remote device unreachable - remote device IP: {swHostname}, Username: {username}")
             authLog.debug(traceback.format_exc())
 
-def delStringFromFile(filePath, stringToDel):
-    with open(filePath, "r") as file:
-        file_content = file.read()
-
-    updated_content = file_content.replace(stringToDel, "")
-
-    with open(filePath, "w") as file:
-        file.write(updated_content)
-
 def checkYNInput(stringInput):
     return stringInput.lower() == 'y' or stringInput.lower() == 'n'
-
-def readIPfromCSV(csvFile):
-    try:
-        with open(csvFile, "r") as deviceFile:
-            csvReader = csv.reader(deviceFile)
-            for row in csvReader:
-                for ip in row:
-                    ip = ip.strip()
-                    ip = ip + ".mgmt.internal.das"
-    except Exception as error:
-        print("Error occurred while checking device reachability:", error,"\n")
-        authLog.error(f"Error occurred while checking device reachability for IP {ip}: {error}")
-        authLog.debug(traceback.format_exc())
