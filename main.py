@@ -41,6 +41,7 @@ def main():
     while True:
         os.system("CLS")
         menuStringEnd()
+        mkdir()
         selection = input("Please choose the option that you want: ")
         if checkIsDigit(selection):
             if selection == "1":

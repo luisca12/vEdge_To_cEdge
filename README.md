@@ -7,6 +7,9 @@ This script is to aumatically generate the Tier 2 implementation plan for the mi
 - [License](#license)
 
 ### Updates
+### Version 3.2
+- Modified the Tier 2 table in Caremore - Tier II - 8300 - vEdge to cEdge - gold.docx
+- Modified NDLM Tier 2 File
 ### Version 3.1
 - Released official version
 - Fixed domain resolution

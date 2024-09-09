@@ -357,6 +357,12 @@ def modNDLMISR(rowText, rowText1):
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
 def modNDLM2ISR(rowText, rowText1):
+    print(f'mpls-speed: {rowText[35]}')
+    print(f'bb1-up-speed : {rowText[75]}')
+    print(f'bb1-down-speed : {rowText[76]}')
+    print(f'bb1-carrier: {rowText1[14]}')
+    os.system("PAUSE")
+
     try:
 
         replaceText = {
@@ -375,7 +381,11 @@ def modNDLM2ISR(rowText, rowText1):
             'sw-cedge1-port' : f'{rowText1[24]}',
             'sw-cedge2-port' : f'{rowText1[26]}',
             'sw-cedge1-mpls-port' : f'{rowText1[11]}',
-            'sw-cedge2-mpls-port' : f'{rowText1[12]}'
+            'sw-cedge2-mpls-port' : f'{rowText1[12]}',
+            'mpls-speed' : f'{rowText[35]}',
+            'bb1-up-speed' : f'{rowText[75]}',
+            'bb1-down-speed' : f'{rowText[76]}',
+            'bb1-carrier' : f'{rowText1[14]}'
         }
 
         ndlmFile1 = openpyxl.load_workbook(ndlmPath2)
@@ -880,6 +890,12 @@ def modNDLMvEdge(rowText, rowText1):
         authLog.error(f"Wasn't possible to choose the CSV file, error message: {error}\n", traceback.format_exc())
 
 def modNDLM2vEdge(rowText, rowText1):
+    print(f'mpls-speed: {rowText[38]}')
+    print(f'bb1-up-speed : {rowText[82]}')
+    print(f'bb1-down-speed : {rowText[82]}')
+    print(f'bb1-carrier: {rowText1[14]}')
+    os.system("PAUSE")
+
     try:
 
         replaceText = {
@@ -898,7 +914,11 @@ def modNDLM2vEdge(rowText, rowText1):
             'sw-cedge1-port' : f'{rowText1[24]}',
             'sw-cedge2-port' : f'{rowText1[26]}',
             'sw-cedge1-mpls-port' : f'{rowText1[11]}',
-            'sw-cedge2-mpls-port' : f'{rowText1[12]}'
+            'sw-cedge2-mpls-port' : f'{rowText1[12]}',
+            'mpls-speed' : f'{rowText[38]}',
+            'bb1-up-speed' : f'{rowText[82]}',
+            'bb1-down-speed' : f'{rowText[82]}',
+            'bb1-carrier' : f'{rowText1[14]}'
         }
 
         ndlmFile1 = openpyxl.load_workbook(ndlmPath2)
